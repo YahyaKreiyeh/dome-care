@@ -8,18 +8,30 @@ import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:dome_care/core/widgets/buttons/primary_button.dart';
 import 'package:flutter/material.dart';
 
-class OnboardingView extends StatefulWidget {
+class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});
 
   @override
-  State<OnboardingView> createState() => _OnboardingViewState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
+          child: Column(children: [_OnBoarding(), _GetStartedButton()]),
+        ),
+      ),
+    );
+  }
 }
 
-class _OnboardingViewState extends State<OnboardingView>
-    with TickerProviderStateMixin {
+class _OnBoarding extends StatefulWidget {
+  @override
+  State<_OnBoarding> createState() => _OnBoardingState();
+}
+
+class _OnBoardingState extends State<_OnBoarding> {
   final _pageIndex = ValueNotifier<int>(0);
   late final PageController _pageController;
-
   final List<_OnboardingPage> _pages = <_OnboardingPage>[
     _OnboardingPage(
       image: Assets.images.onboarding1.path,
@@ -63,27 +75,19 @@ class _OnboardingViewState extends State<OnboardingView>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: Column(
-            children: [
-              _OnBoarding(pageController: _pageController, pages: _pages),
-
-              _Indicator(pageIndex: _pageIndex, pages: _pages),
-
-              const _GetStartedButton(),
-            ],
-          ),
-        ),
+    return Expanded(
+      child: Column(
+        children: [
+          _OnBoardingImage(pageController: _pageController, pages: _pages),
+          _Indicator(pageIndex: _pageIndex, pages: _pages),
+        ],
       ),
     );
   }
 }
 
-class _OnBoarding extends StatelessWidget {
-  const _OnBoarding({
+class _OnBoardingImage extends StatelessWidget {
+  const _OnBoardingImage({
     required PageController pageController,
     required List<_OnboardingPage> pages,
   }) : _pageController = pageController,
@@ -203,8 +207,6 @@ class _OnboardingCard extends StatelessWidget {
 }
 
 class _GetStartedButton extends StatelessWidget {
-  const _GetStartedButton();
-
   @override
   Widget build(BuildContext context) {
     return Column(

@@ -2,7 +2,7 @@ import 'package:dome_care/core/di/dependency_injection.dart';
 import 'package:dome_care/core/routing/routes.dart';
 import 'package:dome_care/features/login/presentation/cubit/login_cubit.dart';
 import 'package:dome_care/features/login/presentation/views/login_view.dart';
-import 'package:dome_care/onboarding.dart';
+import 'package:dome_care/onboarding_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,6 +1,7 @@
 flutter_native_splash:
   color: "#FFFFFF"
   image: assets/images/splash.png
+  ios_content_mode: scaleAspectFit
 
   android_12:
     image: assets/images/android_12_splash.png
