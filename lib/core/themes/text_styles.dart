@@ -70,6 +70,12 @@ class TextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.secondaryText,
   );
+
+  static TextStyle secondaryText40016 = const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.secondaryText,
+  );
   static TextStyle hintText40014 = const TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,

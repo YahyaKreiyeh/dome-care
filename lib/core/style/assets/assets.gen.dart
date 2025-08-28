@@ -14,12 +14,43 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/android_12_splash.png
+  AssetGenImage get android12Splash =>
+      const AssetGenImage('assets/images/android_12_splash.png');
+
+  /// File path: assets/images/app_icon.png
+  AssetGenImage get appIcon =>
+      const AssetGenImage('assets/images/app_icon.png');
+
   /// File path: assets/images/login_header.png
   AssetGenImage get loginHeader =>
       const AssetGenImage('assets/images/login_header.png');
 
+  /// File path: assets/images/onboarding_1.png
+  AssetGenImage get onboarding1 =>
+      const AssetGenImage('assets/images/onboarding_1.png');
+
+  /// File path: assets/images/onboarding_2.png
+  AssetGenImage get onboarding2 =>
+      const AssetGenImage('assets/images/onboarding_2.png');
+
+  /// File path: assets/images/onboarding_3.png
+  AssetGenImage get onboarding3 =>
+      const AssetGenImage('assets/images/onboarding_3.png');
+
+  /// File path: assets/images/splash.png
+  AssetGenImage get splash => const AssetGenImage('assets/images/splash.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [loginHeader];
+  List<AssetGenImage> get values => [
+    android12Splash,
+    appIcon,
+    loginHeader,
+    onboarding1,
+    onboarding2,
+    onboarding3,
+    splash,
+  ];
 }
 
 class Assets {

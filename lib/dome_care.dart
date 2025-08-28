@@ -15,7 +15,7 @@ class DomeCare extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: getTheme(),
       onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: isLoggedInUser ? Routes.home : Routes.login,
+      initialRoute: Routes.onboarding,
       builder: (context, child) {
         return SnackbarView(child: child ?? const SizedBox.shrink());
       },

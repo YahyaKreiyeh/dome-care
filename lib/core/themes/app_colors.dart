@@ -18,6 +18,7 @@ class AppColors {
   static const black = Color(0xFF000000);
   static const white = Color(0xFFFFFFFF);
   static const grey = Color(0xFF9E9E9E);
+  static const notSelectedGrey = Color(0xFFF4F8FF);
   static const transparent = Colors.transparent;
 
   // Neutrals
