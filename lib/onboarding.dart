@@ -174,11 +174,13 @@ class _OnboardingCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             VerticalSpace(36),
-            Center(
-              child: Image.asset(
-                data.image,
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.high,
+            Expanded(
+              child: Center(
+                child: Image.asset(
+                  data.image,
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.high,
+                ),
               ),
             ),
             Text(
@@ -192,6 +194,7 @@ class _OnboardingCard extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyles.secondaryText40016,
             ),
+            VerticalSpace(32),
           ],
         ),
       ),
