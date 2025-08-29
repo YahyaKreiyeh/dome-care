@@ -292,6 +292,7 @@ class _AppointmentTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
+                      flex: 7,
                       child: Wrap(
                         spacing: 4,
                         runSpacing: 4,
@@ -301,13 +302,18 @@ class _AppointmentTile extends StatelessWidget {
                         ],
                       ),
                     ),
-                    _Chip(
-                      text: appointment.status,
-                      backgroundColor: backgroundColor,
-                      textStyle: TextStyle(
-                        color: textColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 12,
+                    Expanded(
+                      flex: 3,
+                      child: Align(
+                        child: _Chip(
+                          text: appointment.status,
+                          backgroundColor: backgroundColor,
+                          textStyle: TextStyle(
+                            color: textColor,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -336,7 +342,11 @@ class _Chip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Chip(
       backgroundColor: backgroundColor ?? AppColors.primaryLight,
-      label: Text(text, style: textStyle ?? TextStyles.primary70013),
+      label: Text(
+        text,
+        style: textStyle ?? TextStyles.primary70013,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 }
