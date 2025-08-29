@@ -1,5 +1,6 @@
 import 'package:dome_care/core/constants/constants.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/localization/locale_keys.g.dart';
 import 'package:dome_care/core/routing/routes_extension.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
@@ -8,6 +9,7 @@ import 'package:dome_care/features/appointments/domain/entites/appointment_entit
 import 'package:dome_care/features/appointments/presentation/widget/appointment_date_chips.dart';
 import 'package:dome_care/features/appointments/presentation/widget/details_section.dart';
 import 'package:dome_care/features/appointments/presentation/widget/doctor_header.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class AppointmentBookingConfirmationView extends StatelessWidget {
@@ -21,7 +23,7 @@ class AppointmentBookingConfirmationView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.greyScaffoldBackground,
-      appBar: AppBar(title: const Text('Appointment Details')),
+      appBar: AppBar(title: Text(LocaleKeys.appointment_details_title.tr())),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -87,7 +89,7 @@ class _BookAppointment extends StatelessWidget {
           _FeeField(value: appointment.fee),
           VerticalSpace(16),
           PrimaryButton(
-            text: 'Book Appointment',
+            text: LocaleKeys.booking_book_appointment.tr(),
             onPressed: () => context.popUntilFirst(),
           ),
         ],
@@ -113,7 +115,10 @@ class _FeeField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: Text('Doctor’s Fee', style: TextStyles.primaryText40016),
+            child: Text(
+              LocaleKeys.booking_doctor_fee.tr(),
+              style: TextStyles.primaryText40016,
+            ),
           ),
           Expanded(
             child: Text(

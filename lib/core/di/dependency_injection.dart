@@ -16,10 +16,8 @@ Future<void> setupGetIt() async {
   final dio = await DioFactory.getDio();
   getIt.registerSingleton<Dio>(dio);
 
-  // Snackbar
   getIt.registerFactory<SnackbarBloc>(() => SnackbarBloc());
 
-  // Login
   getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt()));
   getIt.registerLazySingleton<LoginUseCase>(() => LoginUseCase(getIt()));
   getIt.registerLazySingleton<AuthenticationRemoteDataSource>(

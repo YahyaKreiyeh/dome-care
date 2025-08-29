@@ -3,8 +3,10 @@ import 'package:dome_care/core/constants/constants.dart';
 import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/core/helpers/color_helper.dart';
 import 'package:dome_care/core/helpers/formatters.dart';
+import 'package:dome_care/core/helpers/local_helper.dart';
 import 'package:dome_care/core/helpers/shared_pref_helper.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/localization/locale_keys.g.dart';
 import 'package:dome_care/core/networking/dio_factory.dart';
 import 'package:dome_care/core/routing/routes.dart';
 import 'package:dome_care/core/routing/routes_extension.dart';
@@ -12,10 +14,12 @@ import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:dome_care/core/widgets/buttons/primary_button.dart';
 import 'package:dome_care/features/appointments/data/datasources/mock_appointment_data_source.dart';
+import 'package:dome_care/features/appointments/data/datasources/mock_appointment_data_source_ar.dart';
 import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
 import 'package:dome_care/features/appointments/presentation/widget/app_calendar.dart';
 import 'package:dome_care/features/appointments/presentation/widget/app_chip.dart';
 import 'package:dome_care/features/snackbar/bloc/snackbar_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,31 +42,38 @@ class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
     _selectedDay = DateTime(now.year, now.month, now.day);
   }
 
-  List<dynamic> _getEventsForDay(DateTime day) =>
-      mockEvents[DateTime(day.year, day.month, day.day)] ?? const [];
+  List<dynamic> _getEventsForDay(DateTime day) => LocalHelper.isArabic()
+      ? mockEventsAr[DateTime(day.year, day.month, day.day)] ?? const []
+      : mockEvents[DateTime(day.year, day.month, day.day)] ?? const [];
 
   @override
   Widget build(BuildContext context) {
-    final list = _selectedDay == null
-        ? const []
-        : _getEventsForDay(_selectedDay!);
+    final eventsMap = context.locale.languageCode == 'ar'
+        ? mockEventsAr
+        : mockEvents;
+    List<dynamic> eventLoader(DateTime day) =>
+        eventsMap[DateTime(day.year, day.month, day.day)] ?? const [];
+
+    final list = _selectedDay == null ? const [] : eventLoader(_selectedDay!);
+
+    final localeTag = context.locale.toLanguageTag();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Appointments'),
+        title: Text(LocaleKeys.appointments_myAppointments.tr()),
         actions: [
-          // HACK: this buttons for user session testing
           IconButton(
-            onPressed: () async {
-              await SharedPrefHelper.deleteSecured(SharedPrefKeys.userToken);
-              if (context.mounted) {
-                context.pushReplacementNamed(Routes.login);
+            onPressed: () {
+              final currentLocale = context.locale;
+              if (currentLocale.languageCode == 'en') {
+                context.setLocale(const Locale('ar'));
+              } else {
+                context.setLocale(const Locale('en'));
               }
             },
-            icon: const Icon(Icons.logout, color: AppColors.grey),
-            tooltip: 'Logout',
+            icon: const Icon(Icons.language, color: AppColors.grey),
           ),
-
+          // HACK: these buttons are for user session testing
           IconButton(
             onPressed: () async {
               await SharedPrefHelper.deleteSecured(SharedPrefKeys.userToken);
@@ -78,9 +89,8 @@ class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
               }
             },
             icon: const Icon(Icons.delete_forever, color: AppColors.grey),
-            tooltip: 'Clear both tokens',
+            tooltip: LocaleKeys.appointments_clearTokens.tr(),
           ),
-
           IconButton(
             onPressed: () async {
               final dio = await DioFactory.getDio();
@@ -89,7 +99,7 @@ class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
                 if (context.mounted) {
                   context.read<SnackbarBloc>().add(
                     AddSnackbarEvent(
-                      message: 'Test request succeeded',
+                      message: LocaleKeys.appointments_testSucceeded.tr(),
                       type: SnackbarType.success,
                     ),
                   );
@@ -98,7 +108,9 @@ class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
                 if (context.mounted) {
                   context.read<SnackbarBloc>().add(
                     AddSnackbarEvent(
-                      message: 'Test request failed: ${e.message}',
+                      message: LocaleKeys.appointments_testFailed.tr(
+                        args: [e.message ?? ''],
+                      ),
                       type: SnackbarType.error,
                     ),
                   );
@@ -106,7 +118,17 @@ class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
               }
             },
             icon: const Icon(Icons.refresh, color: AppColors.grey),
-            tooltip: 'Test Refresh',
+            tooltip: LocaleKeys.appointments_testRefresh.tr(),
+          ),
+          IconButton(
+            onPressed: () async {
+              await SharedPrefHelper.deleteSecured(SharedPrefKeys.userToken);
+              if (context.mounted) {
+                context.pushReplacementNamed(Routes.login);
+              }
+            },
+            icon: const Icon(Icons.logout, color: AppColors.grey),
+            tooltip: LocaleKeys.appointments_logout.tr(),
           ),
         ],
       ),
@@ -135,7 +157,7 @@ class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
                     });
                   },
                 ),
-                _AppointmentsList(list: list),
+                _AppointmentsList(list: list, localeTag: localeTag),
               ],
             ),
             _NewAppointmentButton(),
@@ -154,7 +176,7 @@ class _NewAppointmentButton extends StatelessWidget {
       left: horizontalPadding,
       right: horizontalPadding,
       child: PrimaryButton(
-        text: 'Add New Appointment',
+        text: LocaleKeys.appointments_addNew.tr(),
         onPressed: () => context.pushNamed(Routes.doctorsSearch),
       ),
     );
@@ -162,9 +184,10 @@ class _NewAppointmentButton extends StatelessWidget {
 }
 
 class _AppointmentsList extends StatelessWidget {
-  const _AppointmentsList({required this.list});
+  const _AppointmentsList({required this.list, required this.localeTag});
 
   final List list;
+  final String localeTag;
 
   @override
   Widget build(BuildContext context) {
@@ -174,11 +197,14 @@ class _AppointmentsList extends StatelessWidget {
           : ColoredBox(
               color: AppColors.white,
               child: ListView.builder(
-                padding: EdgeInsets.only(top: 24, bottom: 50),
+                padding: const EdgeInsets.only(top: 24, bottom: 50),
                 itemCount: list.length,
                 itemBuilder: (context, index) {
-                  final appointment = list[index];
-                  return _AppointmentTile(appointment: appointment);
+                  final appointment = list[index] as AppointmentEntity;
+                  return _AppointmentTile(
+                    appointment: appointment,
+                    localeTag: localeTag,
+                  );
                 },
               ),
             ),
@@ -187,13 +213,20 @@ class _AppointmentsList extends StatelessWidget {
 }
 
 class _AppointmentTile extends StatelessWidget {
-  const _AppointmentTile({required this.appointment});
+  const _AppointmentTile({required this.appointment, required this.localeTag});
 
   final AppointmentEntity appointment;
+  final String localeTag;
 
   @override
   Widget build(BuildContext context) {
-    final date = AppFormatter.formatDate(appointment.date);
+    final date = AppFormatter.formatDate(appointment.date, locale: localeTag);
+
+    final time = AppFormatter.formatTimeFromEnglish(
+      appointment.time,
+      toLocale: localeTag,
+    );
+
     final (backgroundColor, textColor) = ColorHelper.statusColors(
       appointment.status,
     );
@@ -218,7 +251,7 @@ class _AppointmentTile extends StatelessWidget {
                   backgroundColor: avatarBg,
                   backgroundImage: AssetImage(appointment.doctor.image),
                 ),
-                HorizontalSpace(8),
+                const HorizontalSpace(8),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +265,7 @@ class _AppointmentTile extends StatelessWidget {
                               spacing: 4,
                               children: [
                                 AppChip(text: date),
-                                AppChip(text: appointment.time),
+                                AppChip(text: time),
                               ],
                             ),
                           ),
@@ -280,7 +313,7 @@ class _EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        'No appointments for this date.',
+        LocaleKeys.appointments_emptyState.tr(),
         style: TextStyles.secondaryText40012,
       ),
     );

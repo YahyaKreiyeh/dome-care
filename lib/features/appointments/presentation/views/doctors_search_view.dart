@@ -1,6 +1,7 @@
 import 'package:dome_care/core/constants/constants.dart';
 import 'package:dome_care/core/helpers/color_helper.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/localization/locale_keys.g.dart';
 import 'package:dome_care/core/routing/routes.dart';
 import 'package:dome_care/core/routing/routes_extension.dart';
 import 'package:dome_care/core/style/assets/assets.gen.dart';
@@ -8,7 +9,9 @@ import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:dome_care/core/widgets/text_fields/custom_text_field.dart';
 import 'package:dome_care/features/appointments/data/datasources/mock_appointment_data_source.dart';
+import 'package:dome_care/features/appointments/data/datasources/mock_appointment_data_source_ar.dart';
 import 'package:dome_care/features/appointments/domain/entites/doctor_entity.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class DoctorsSearchView extends StatefulWidget {
@@ -22,14 +25,17 @@ class _DoctorsSearchViewState extends State<DoctorsSearchView> {
   final _controller = TextEditingController();
   String _searchTerm = '';
 
-  late final List<DoctorEntity> _doctors = mockDoctors;
-
   @override
   Widget build(BuildContext context) {
+    final doctors = context.locale.languageCode == 'ar'
+        ? mockDoctorsAr
+        : mockDoctors;
+
     final query = _searchTerm.trim().toLowerCase();
+
     final filteredDoctors = query.isEmpty
-        ? _doctors
-        : _doctors
+        ? doctors
+        : doctors
               .where(
                 (doctor) =>
                     doctor.name.toLowerCase().contains(query) ||
@@ -41,7 +47,7 @@ class _DoctorsSearchViewState extends State<DoctorsSearchView> {
     return Scaffold(
       backgroundColor: AppColors.greyScaffoldBackground,
       appBar: AppBar(
-        title: const Text('Book Appointment'),
+        title: Text(LocaleKeys.doctors_bookAppointment.tr()),
         bottom: _SearchBarField(
           controller: _controller,
           onChanged: (value) => setState(() => _searchTerm = value),
@@ -156,7 +162,7 @@ class _SearchBarField extends StatelessWidget implements PreferredSizeWidget {
         ),
         child: CustomTextField(
           controller: controller,
-          hintText: 'Search for doctors',
+          hintText: LocaleKeys.doctors_searchHint.tr(),
           onChanged: onChanged,
           textStyle: TextStyles.primaryText40015,
           filled: true,

@@ -1,3 +1,6 @@
+import 'package:dome_care/core/localization/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 bool validateSyrianLocalNumber(String digitsOnly) {
   final d = digitsOnly;
   if (d.isEmpty) return false;
@@ -18,8 +21,8 @@ String toSyrianE164(String localDigits) {
 
 String? passwordValidationError(String value) {
   final v = value;
-  if (v.isEmpty) return 'Password is required';
-  if (v.contains(' ')) return 'No spaces allowed';
-  if (v.length < 8) return 'At least 8 characters';
+  if (v.isEmpty) return LocaleKeys.login_password_required.tr();
+  if (v.contains(' ')) return LocaleKeys.login_password_no_spaces_allowed.tr();
+  if (v.length < 8) return LocaleKeys.login_password_at_least_8_characters.tr();
   return null;
 }

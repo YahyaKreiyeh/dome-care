@@ -141,12 +141,6 @@ class TextStyles {
     color: AppColors.whiteText,
   );
 
-  static TextStyle outSideTextColor40015 = const TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.w400,
-    color: AppColors.outSideText,
-  );
-
   static TextStyle primary40016 = const TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w400,

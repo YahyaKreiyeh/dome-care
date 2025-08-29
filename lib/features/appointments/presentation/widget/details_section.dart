@@ -1,10 +1,12 @@
 import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/localization/locale_keys.g.dart';
 import 'package:dome_care/core/style/assets/assets.gen.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:dome_care/features/appointments/presentation/widget/detail_row.dart';
 import 'package:dome_care/features/appointments/presentation/widget/status_chip_row.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 
 class DetailsSection extends StatelessWidget {
@@ -40,32 +42,38 @@ class DetailsSection extends StatelessWidget {
           if (status != null)
             StatusChipRow(status: status!)
           else
-            Text('Details', style: TextStyles.primaryText40014),
+            Text(
+              LocaleKeys.details_title.tr(),
+              style: TextStyles.primaryText40014,
+            ),
           VerticalSpace(12),
           DetailRow(
-            label: 'Location',
+            label: LocaleKeys.details_location.tr(),
             value: location,
             icon: Assets.icons.location.svg(),
           ),
           DetailRow(
-            label: 'Phone number',
+            label: LocaleKeys.details_phoneNumber.tr(),
             value: phoneNumber,
             icon: Assets.icons.phone.svg(),
           ),
           DetailRow(
-            label: 'Telephone',
+            label: LocaleKeys.details_telephone.tr(),
             value: telephone,
             icon: Assets.icons.telephone.svg(),
           ),
           if (fee != null)
             DetailRow(
-              label: 'Doctor Fee',
+              label: LocaleKeys.details_doctorFee.tr(),
               value: fee!,
               icon: Assets.icons.money.svg(),
             ),
           if (status == AppointmentStatus.canceled && cancelReason != null) ...[
             VerticalSpace(12),
-            Text('Canceled Reason', style: TextStyles.primaryText40014),
+            Text(
+              LocaleKeys.details_canceledReason.tr(),
+              style: TextStyles.primaryText40014,
+            ),
             VerticalSpace(8),
             Text(cancelReason!, style: TextStyles.secondaryText40014),
           ],

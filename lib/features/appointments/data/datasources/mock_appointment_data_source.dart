@@ -85,14 +85,13 @@ final List<DoctorEntity> mockDoctors = [
 
 DoctorEntity _randomDoctor() => mockDoctors[_rnd.nextInt(mockDoctors.length)];
 
-/// ---------- Mock Appointments (use nested doctor) ----------
 final Map<DateTime, List<AppointmentEntity>> mockEvents = {
   DateTime(2025, 8, 23): [
     AppointmentEntity(
       date: DateTime(2025, 8, 23),
       time: "10:00 AM",
       status: AppointmentStatus.canceled,
-      doctor: mockDoctors[0], // Dr. Benjamin Li
+      doctor: mockDoctors[0],
       fee: '40,000 SYR',
       cancelReason: _defaultReason,
     ),
@@ -100,7 +99,7 @@ final Map<DateTime, List<AppointmentEntity>> mockEvents = {
       date: DateTime(2025, 8, 23),
       time: "02:30 PM",
       status: _randomStatus(),
-      doctor: mockDoctors[1], // Dr. Jane Smith
+      doctor: mockDoctors[1],
       fee: _randomFee(),
     ),
   ],
@@ -110,21 +109,21 @@ final Map<DateTime, List<AppointmentEntity>> mockEvents = {
       date: DateTime(2025, 8, 4),
       time: "09:00 AM",
       status: _randomStatus(),
-      doctor: mockDoctors[2], // Dr. Albert Lee
+      doctor: mockDoctors[2],
       fee: _randomFee(),
     ),
     AppointmentEntity(
       date: DateTime(2025, 8, 4),
       time: "01:00 PM",
       status: _randomStatus(),
-      doctor: mockDoctors[3], // Dr. Emily Brown
+      doctor: mockDoctors[3],
       fee: _randomFee(),
     ),
     AppointmentEntity(
       date: DateTime(2025, 8, 4),
       time: "03:45 PM",
       status: _randomStatus(),
-      doctor: mockDoctors[4], // Dr. David Wilson
+      doctor: mockDoctors[4],
       fee: _randomFee(),
     ),
   ],

@@ -1,6 +1,7 @@
 import 'package:dome_care/core/constants/constants.dart';
 import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/localization/locale_keys.g.dart';
 import 'package:dome_care/core/models/result.dart';
 import 'package:dome_care/core/routing/routes.dart';
 import 'package:dome_care/core/routing/routes_extension.dart';
@@ -12,6 +13,7 @@ import 'package:dome_care/core/widgets/text_fields/custom_text_field.dart';
 import 'package:dome_care/features/login/presentation/cubit/login_cubit.dart';
 import 'package:dome_care/features/login/presentation/cubit/login_state.dart';
 import 'package:dome_care/features/snackbar/bloc/snackbar_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -51,11 +53,11 @@ class _CreateAccount extends StatelessWidget {
           TextSpan(
             children: [
               TextSpan(
-                text: 'New to DomeCare? ',
+                text: LocaleKeys.login_new_to_app.tr(),
                 style: TextStyles.primaryText40016,
               ),
               TextSpan(
-                text: 'Create Account',
+                text: LocaleKeys.login_create_account_cta.tr(),
                 style: TextStyles.primary70016.copyWith(
                   decoration: TextDecoration.underline,
                   decorationColor: AppColors.appPrimaryText,
@@ -95,7 +97,7 @@ class _LoginButton extends StatelessWidget {
       children: [
         VerticalSpace(108),
         PrimaryButton(
-          text: 'Log In',
+          text: LocaleKeys.login_log_in.tr(),
           loading: isLoading,
           onPressed: canSubmit
               ? () => context.read<LoginCubit>().login()
@@ -124,7 +126,7 @@ class _Welcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Welcome back to DomeCare 👋',
+      LocaleKeys.login_welcome.tr(),
       style: TextStyles.primaryText70018,
     );
   }
@@ -140,7 +142,7 @@ class _LoginBlocListener extends StatelessWidget {
           success: (_) {
             context.read<SnackbarBloc>().add(
               AddSnackbarEvent(
-                message: 'Login successful',
+                message: LocaleKeys.login_success.tr(),
                 type: SnackbarType.success,
               ),
             );
@@ -149,7 +151,7 @@ class _LoginBlocListener extends StatelessWidget {
           failure: (_, _, errorMessage) {
             context.read<SnackbarBloc>().add(
               AddSnackbarEvent(
-                message: errorMessage ?? 'Login failed',
+                message: errorMessage ?? LocaleKeys.login_failed.tr(),
                 type: SnackbarType.error,
               ),
             );
@@ -184,7 +186,7 @@ class _ForgotPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      "Forgot password?",
+      LocaleKeys.login_forgot_password.tr(),
       style: TextStyles.primaryText70013.copyWith(
         decoration: TextDecoration.underline,
       ),
@@ -203,7 +205,7 @@ class _UsernameInput extends StatelessWidget {
     return CustomTextField(
       keyboardType: TextInputType.text,
       onChanged: context.read<LoginCubit>().usernameChanged,
-      hintText: 'Username',
+      hintText: LocaleKeys.login_username.tr(),
       errorText: error,
       onEditingComplete: () => FocusScope.of(context).nextFocus(),
     );
@@ -357,7 +359,7 @@ class _PasswordInput extends StatelessWidget {
         !isLoading;
 
     return CustomTextField(
-      hintText: 'Password',
+      hintText: LocaleKeys.login_password.tr(),
       obscureText: isObscured,
       errorText: error,
       onChanged: context.read<LoginCubit>().passwordChanged,

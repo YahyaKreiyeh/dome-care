@@ -2,6 +2,7 @@ import 'package:dome_care/core/constants/constants.dart';
 import 'package:dome_care/core/helpers/formatters.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -31,33 +32,60 @@ class AppCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasEvents = eventLoader != null;
+    final localeTag = context.locale.toLanguageTag();
+    final startOfWeek = context.locale.languageCode == 'ar'
+        ? StartingDayOfWeek.saturday
+        : StartingDayOfWeek.sunday;
+
+    Widget headerTitle(BuildContext context, DateTime date) {
+      return Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              AppFormatter.formatMonthYear(date, locale: localeTag),
+              style: TextStyles.primaryText60016,
+            ),
+            const SizedBox(width: 6),
+            const Icon(
+              Icons.keyboard_arrow_down_rounded,
+              size: 20,
+              color: AppColors.primaryText,
+            ),
+          ],
+        ),
+      );
+    }
 
     return ColoredBox(
       color: AppColors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: TableCalendar(
+          locale: localeTag,
+          startingDayOfWeek: startOfWeek,
           daysOfWeekHeight: 40,
           firstDay: firstDay ?? DateTime.utc(DateTime.now().year, 1, 1),
           lastDay: lastDay ?? DateTime.utc(DateTime.now().year + 1, 12, 31),
           focusedDay: focusedDay,
-          startingDayOfWeek: StartingDayOfWeek.sunday,
           availableGestures: gestures ?? AvailableGestures.horizontalSwipe,
           headerStyle: HeaderStyle(
-            headerPadding: EdgeInsets.symmetric(vertical: 16),
+            headerPadding: const EdgeInsets.symmetric(vertical: 16),
             leftChevronMargin: EdgeInsets.zero,
             rightChevronMargin: EdgeInsets.zero,
             formatButtonVisible: false,
             titleCentered: true,
-            leftChevronIcon: Icon(
+            leftChevronIcon: const Icon(
               Icons.chevron_left,
               color: AppColors.primaryText,
             ),
-            rightChevronIcon: Icon(
+            rightChevronIcon: const Icon(
               Icons.chevron_right,
               color: AppColors.primaryText,
             ),
             titleTextStyle: TextStyles.primaryText60016,
+            titleTextFormatter: (date, locale) =>
+                AppFormatter.formatMonthYear(date, locale: locale),
           ),
           daysOfWeekStyle: DaysOfWeekStyle(
             dowTextFormatter: (date, locale) =>
@@ -92,17 +120,16 @@ class AppCalendar extends StatelessWidget {
           eventLoader: eventLoader ?? (_) => const [],
           calendarBuilders: hasEvents
               ? CalendarBuilders(
-                  selectedBuilder: (context, day, _) {
-                    return Container(
-                      margin: const EdgeInsets.all(4),
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.primary,
-                      ),
-                      child: Text('${day.day}', style: TextStyles.white70014),
-                    );
-                  },
+                  headerTitleBuilder: headerTitle,
+                  selectedBuilder: (context, day, _) => Container(
+                    margin: const EdgeInsets.all(4),
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.primary,
+                    ),
+                    child: Text('${day.day}', style: TextStyles.white70014),
+                  ),
                   defaultBuilder: (context, day, _) {
                     final evts = (eventLoader?.call(day) ?? const []);
                     if (evts.isEmpty) return null;
@@ -152,7 +179,7 @@ class AppCalendar extends StatelessWidget {
                     );
                   },
                 )
-              : const CalendarBuilders(),
+              : CalendarBuilders(headerTitleBuilder: headerTitle),
         ),
       ),
     );

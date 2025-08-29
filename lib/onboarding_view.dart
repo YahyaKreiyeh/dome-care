@@ -1,12 +1,14 @@
 import 'package:dome_care/core/constants/constants.dart';
 import 'package:dome_care/core/helpers/shared_pref_helper.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/localization/locale_keys.g.dart';
 import 'package:dome_care/core/routing/routes.dart';
 import 'package:dome_care/core/routing/routes_extension.dart';
 import 'package:dome_care/core/style/assets/assets.gen.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:dome_care/core/widgets/buttons/primary_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingView extends StatelessWidget {
@@ -34,24 +36,22 @@ class _OnBoarding extends StatefulWidget {
 class _OnBoardingState extends State<_OnBoarding> {
   final _pageIndex = ValueNotifier<int>(0);
   late final PageController _pageController;
-  final List<_OnboardingPage> _pages = <_OnboardingPage>[
+
+  final List<_OnboardingPage> _pages = [
     _OnboardingPage(
       image: Assets.images.onboarding1.path,
-      title: 'Book Appointments & Consultations',
-      subtitle:
-          'You can request a Consultation from Doctors and Book Appointment with them 👨‍⚕️',
+      title: LocaleKeys.onboarding_page1_title.tr(),
+      subtitle: LocaleKeys.onboarding_page1_subtitle.tr(),
     ),
     _OnboardingPage(
       image: Assets.images.onboarding2.path,
-      title: 'Keep your Medical Records',
-      subtitle:
-          'DomeCare allows you to keep your Medical Records safely at anytime, anywhere 🔐',
+      title: LocaleKeys.onboarding_page2_title.tr(),
+      subtitle: LocaleKeys.onboarding_page2_subtitle.tr(),
     ),
     _OnboardingPage(
       image: Assets.images.onboarding3.path,
-      title: 'Search for your Medication',
-      subtitle:
-          'Get fully automated Medication leaflet and search for it in nearest pharmacies🚶‍♂️',
+      title: LocaleKeys.onboarding_page3_title.tr(),
+      subtitle: LocaleKeys.onboarding_page3_subtitle.tr(),
     ),
   ];
 
@@ -214,7 +214,7 @@ class _GetStartedButton extends StatelessWidget {
     return Column(
       children: [
         PrimaryButton(
-          text: 'Get Started',
+          text: LocaleKeys.onboarding_getStarted.tr(),
           onPressed: () async {
             await SharedPrefHelper.setData(
               SharedPrefKeys.isOnboardingCompleted,

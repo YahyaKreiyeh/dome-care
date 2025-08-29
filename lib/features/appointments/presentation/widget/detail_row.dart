@@ -1,3 +1,4 @@
+import 'package:dome_care/core/helpers/formatters.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:flutter/widgets.dart';
@@ -33,7 +34,7 @@ class DetailRow extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    value,
+                    AppFormatter.forceLtr(value),
                     style: TextStyles.grey2Text40014,
                     textAlign: TextAlign.end,
                   ),

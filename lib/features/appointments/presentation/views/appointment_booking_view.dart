@@ -2,6 +2,7 @@ import 'package:dome_care/core/constants/constants.dart';
 import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/core/helpers/color_helper.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/localization/locale_keys.g.dart';
 import 'package:dome_care/core/routing/routes.dart';
 import 'package:dome_care/core/routing/routes_extension.dart';
 import 'package:dome_care/core/style/assets/assets.gen.dart';
@@ -11,6 +12,7 @@ import 'package:dome_care/core/widgets/buttons/primary_button.dart';
 import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
 import 'package:dome_care/features/appointments/domain/entites/doctor_entity.dart';
 import 'package:dome_care/features/appointments/presentation/widget/app_calendar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class AppointmentBookingView extends StatefulWidget {
@@ -31,26 +33,39 @@ class _AppointmentBookingViewState extends State<AppointmentBookingView> {
   String? _selectedTime;
 
   List<_Slot> _buildSlotsFor(DateTime day) {
-    final base = <String>[
-      '09:00 AM',
-      '09:30 AM',
-      '10:00 AM',
-      '10:30 AM',
-      '11:00 AM',
-      '11:30 AM',
-      '03:00 PM',
-      '03:30 PM',
-      '04:00 PM',
-      '04:30 PM',
-      '05:00 PM',
-      '05:30 PM',
+    final times = <TimeOfDay>[
+      const TimeOfDay(hour: 9, minute: 0),
+      const TimeOfDay(hour: 9, minute: 30),
+      const TimeOfDay(hour: 10, minute: 0),
+      const TimeOfDay(hour: 10, minute: 30),
+      const TimeOfDay(hour: 11, minute: 0),
+      const TimeOfDay(hour: 11, minute: 30),
+      const TimeOfDay(hour: 15, minute: 0),
+      const TimeOfDay(hour: 15, minute: 30),
+      const TimeOfDay(hour: 16, minute: 0),
+      const TimeOfDay(hour: 16, minute: 30),
+      const TimeOfDay(hour: 17, minute: 0),
+      const TimeOfDay(hour: 17, minute: 30),
     ];
 
-    return List<_Slot>.generate(base.length, (i) {
+    final locale = context.locale.toString();
+
+    return times.map((t) {
+      final dt = DateTime(0, 1, 1, t.hour, t.minute);
+
+      final timeEn = DateFormat('hh:mm', 'en').format(dt);
+      var period = DateFormat('a', locale).format(dt);
+      if (period.trim().isEmpty) {
+        period = DateFormat('a', 'en').format(dt);
+      }
+      final formatted = '$timeEn $period';
+
       final enabled =
-          (i % 2 == 1) || (i == 0 && day.weekday != DateTime.sunday);
-      return _Slot(label: base[i], enabled: enabled);
-    });
+          (t.minute == 30) ||
+          (t.hour == 9 && t.minute == 0 && day.weekday != DateTime.sunday);
+
+      return _Slot(label: formatted, enabled: enabled);
+    }).toList();
   }
 
   @override
@@ -60,7 +75,7 @@ class _AppointmentBookingViewState extends State<AppointmentBookingView> {
 
     return Scaffold(
       backgroundColor: AppColors.greyScaffoldBackground,
-      appBar: AppBar(title: const Text('Book Appointment')),
+      appBar: AppBar(title: Text(LocaleKeys.appointment_booking_title.tr())),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -127,7 +142,7 @@ class _NextButton extends StatelessWidget {
         bottom: 32,
       ),
       child: PrimaryButton(
-        text: 'Next',
+        text: LocaleKeys.appointment_booking_confirm_next.tr(),
         onPressed: canContinue
             ? () {
                 final appt = AppointmentEntity(
@@ -135,7 +150,7 @@ class _NextButton extends StatelessWidget {
                   time: _selectedTime!,
                   status: AppointmentStatus.pending,
                   doctor: widget.doctor,
-                  fee: 'Unknown',
+                  fee: LocaleKeys.unknown.tr(),
                 );
                 context.pushNamed(
                   Routes.appointmentBookingConfirmation,
