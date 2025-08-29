@@ -144,7 +144,7 @@ class _LoginBlocListener extends StatelessWidget {
                 type: SnackbarType.success,
               ),
             );
-            context.pushReplacementNamed(Routes.myAppointments);
+            context.pushReplacementNamed(Routes.appointmentsCalendar);
           },
           failure: (_, _, errorMessage) {
             context.read<SnackbarBloc>().add(

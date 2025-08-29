@@ -1,8 +1,10 @@
 class Routes {
   static const String login = 'login';
   static const String onboarding = 'onboarding';
-  static const String myAppointments = 'my_appointments';
+  static const String appointmentsCalendar = 'appointments_calendar';
   static const String appointmentDetails = 'appointment_details';
-  static const String searchDoctors = 'search_doctors';
-  static const String bookAppointment = 'book_appointment';
+  static const String doctorsSearch = 'doctors_search';
+  static const String appointmentBooking = 'appointment_booking';
+  static const String appointmentBookingConfirmation =
+      'appointment_booking_confirmation';
 }

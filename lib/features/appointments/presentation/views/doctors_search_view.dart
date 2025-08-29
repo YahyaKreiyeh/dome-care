@@ -11,14 +11,14 @@ import 'package:dome_care/features/appointments/data/datasources/mock_appointmen
 import 'package:dome_care/features/appointments/domain/entites/doctor_entity.dart';
 import 'package:flutter/material.dart';
 
-class SearchDoctorsView extends StatefulWidget {
-  const SearchDoctorsView({super.key});
+class DoctorsSearchView extends StatefulWidget {
+  const DoctorsSearchView({super.key});
 
   @override
-  State<SearchDoctorsView> createState() => _SearchDoctorsViewState();
+  State<DoctorsSearchView> createState() => _DoctorsSearchViewState();
 }
 
-class _SearchDoctorsViewState extends State<SearchDoctorsView> {
+class _DoctorsSearchViewState extends State<DoctorsSearchView> {
   final _controller = TextEditingController();
   String _searchTerm = '';
 
@@ -42,66 +42,30 @@ class _SearchDoctorsViewState extends State<SearchDoctorsView> {
       backgroundColor: AppColors.greyScaffoldBackground,
       appBar: AppBar(
         title: const Text('Book Appointment'),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(60),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-              vertical: 10,
-            ),
-            child: CustomTextField(
-              controller: _controller,
-              hintText: 'Search for doctors',
-              onChanged: (v) => setState(() => _searchTerm = v),
-              textStyle: TextStyles.primaryText40015,
-              filled: true,
-              showBorder: false,
-              fillColor: AppColors.inputFillGrey,
-              prefixIcon: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Assets.icons.search.svg(
-                  colorFilter: const ColorFilter.mode(
-                    AppColors.primaryText,
-                    BlendMode.srcIn,
-                  ),
-                ),
-              ),
-              prefixIconConstraints: const BoxConstraints.tightFor(
-                width: 43,
-                height: 43,
-              ),
-              suffixIcon: InkWell(
-                onTap: () {
-                  if (_searchTerm.isNotEmpty) {
-                    _controller.clear();
-                    setState(() => _searchTerm = '');
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Assets.icons.close.svg(
-                    colorFilter: const ColorFilter.mode(
-                      AppColors.secondaryText,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
-              ),
-              suffixIconConstraints: const BoxConstraints.tightFor(
-                width: 43,
-                height: 43,
-              ),
-            ),
-          ),
+        bottom: _SearchBarField(
+          controller: _controller,
+          onChanged: (value) => setState(() => _searchTerm = value),
         ),
       ),
-      body: ColoredBox(
-        color: AppColors.whiteScaffoldBackground,
-        child: ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          itemCount: filteredDoctors.length,
-          itemBuilder: (context, i) => _DoctorTile(doctor: filteredDoctors[i]),
-        ),
+      body: CustomScrollView(
+        slivers: [_DoctorsList(filteredDoctors: filteredDoctors)],
+      ),
+    );
+  }
+}
+
+class _DoctorsList extends StatelessWidget {
+  const _DoctorsList({required this.filteredDoctors});
+
+  final List<DoctorEntity> filteredDoctors;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.only(top: 3, bottom: 8),
+      sliver: SliverList.builder(
+        itemCount: filteredDoctors.length,
+        itemBuilder: (context, i) => _DoctorTile(doctor: filteredDoctors[i]),
       ),
     );
   }
@@ -120,7 +84,7 @@ class _DoctorTile extends StatelessWidget {
         splashColor: AppColors.primaryLight,
         highlightColor: AppColors.primaryLight,
         onTap: () =>
-            context.pushNamed(Routes.bookAppointment, arguments: doctor),
+            context.pushNamed(Routes.appointmentBooking, arguments: doctor),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Row(
@@ -165,6 +129,70 @@ class _DoctorTile extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SearchBarField extends StatelessWidget implements PreferredSizeWidget {
+  const _SearchBarField({required this.controller, required this.onChanged});
+
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(60);
+
+  @override
+  Widget build(BuildContext context) {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(60),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: horizontalPadding,
+          vertical: 10,
+        ),
+        child: CustomTextField(
+          controller: controller,
+          hintText: 'Search for doctors',
+          onChanged: onChanged,
+          textStyle: TextStyles.primaryText40015,
+          filled: true,
+          showBorder: false,
+          fillColor: AppColors.inputFillGrey,
+          prefixIcon: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Assets.icons.search.svg(
+              colorFilter: const ColorFilter.mode(
+                AppColors.primaryText,
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
+          prefixIconConstraints: const BoxConstraints.tightFor(
+            width: 43,
+            height: 43,
+          ),
+          suffixIcon: InkWell(
+            onTap: () {
+              if (controller.text.isNotEmpty) controller.clear();
+              onChanged('');
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Assets.icons.close.svg(
+                colorFilter: const ColorFilter.mode(
+                  AppColors.secondaryText,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+          ),
+          suffixIconConstraints: const BoxConstraints.tightFor(
+            width: 43,
+            height: 43,
           ),
         ),
       ),

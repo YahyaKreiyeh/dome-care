@@ -1,0 +1,35 @@
+import 'package:dome_care/core/helpers/formatters.dart';
+import 'package:dome_care/core/themes/app_colors.dart';
+import 'package:dome_care/core/themes/text_styles.dart';
+import 'package:dome_care/features/appointments/presentation/widget/app_chip.dart';
+import 'package:flutter/widgets.dart';
+
+class AppointmentDateChips extends StatelessWidget {
+  const AppointmentDateChips({
+    super.key,
+    required this.date,
+    required this.time,
+  });
+
+  final DateTime date;
+  final String time;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 4,
+      children: [
+        AppChip(
+          text: AppFormatter.formatDate(date),
+          backgroundColor: AppColors.chipGrey,
+          textStyle: TextStyles.secondaryText70016,
+        ),
+        AppChip(
+          text: time,
+          backgroundColor: AppColors.chipGrey,
+          textStyle: TextStyles.secondaryText70016,
+        ),
+      ],
+    );
+  }
+}

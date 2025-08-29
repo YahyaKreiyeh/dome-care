@@ -1,24 +1,27 @@
 import 'package:dome_care/core/constants/constants.dart';
+import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/core/helpers/color_helper.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/routing/routes.dart';
 import 'package:dome_care/core/routing/routes_extension.dart';
 import 'package:dome_care/core/style/assets/assets.gen.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:dome_care/core/widgets/buttons/primary_button.dart';
+import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
 import 'package:dome_care/features/appointments/domain/entites/doctor_entity.dart';
 import 'package:dome_care/features/appointments/presentation/widget/app_calendar.dart';
 import 'package:flutter/material.dart';
 
-class BookAppointmentView extends StatefulWidget {
-  const BookAppointmentView({super.key, required this.doctor});
+class AppointmentBookingView extends StatefulWidget {
+  const AppointmentBookingView({super.key, required this.doctor});
   final DoctorEntity doctor;
 
   @override
-  State<BookAppointmentView> createState() => _BookAppointmentViewState();
+  State<AppointmentBookingView> createState() => _AppointmentBookingViewState();
 }
 
-class _BookAppointmentViewState extends State<BookAppointmentView> {
+class _AppointmentBookingViewState extends State<AppointmentBookingView> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime(
     DateTime.now().year,
@@ -59,7 +62,6 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
       backgroundColor: AppColors.greyScaffoldBackground,
       appBar: AppBar(title: const Text('Book Appointment')),
       body: SafeArea(
-        bottom: false,
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -85,19 +87,34 @@ class _BookAppointmentViewState extends State<BookAppointmentView> {
                 selected: _selectedTime,
                 onSelect: (v) => setState(() => _selectedTime = v),
               ),
-              _NextButton(canContinue: canContinue),
+              VerticalSpace(16),
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: _NextButton(
+        canContinue: canContinue,
+        selectedDay: _selectedDay,
+        selectedTime: _selectedTime,
+        widget: widget,
       ),
     );
   }
 }
 
 class _NextButton extends StatelessWidget {
-  const _NextButton({required this.canContinue});
+  const _NextButton({
+    required this.canContinue,
+    required DateTime selectedDay,
+    required String? selectedTime,
+    required this.widget,
+  }) : _selectedDay = selectedDay,
+       _selectedTime = selectedTime;
 
   final bool canContinue;
+  final DateTime _selectedDay;
+  final String? _selectedTime;
+  final AppointmentBookingView widget;
 
   @override
   Widget build(BuildContext context) {
@@ -106,13 +123,24 @@ class _NextButton extends StatelessWidget {
       padding: const EdgeInsetsDirectional.only(
         start: horizontalPadding,
         end: horizontalPadding,
-        bottom: 60,
+        top: 16,
+        bottom: 32,
       ),
       child: PrimaryButton(
         text: 'Next',
         onPressed: canContinue
             ? () {
-                context.pop();
+                final appt = AppointmentEntity(
+                  date: _selectedDay,
+                  time: _selectedTime!,
+                  status: AppointmentStatus.pending,
+                  doctor: widget.doctor,
+                  fee: 'Unknown',
+                );
+                context.pushNamed(
+                  Routes.appointmentBookingConfirmation,
+                  arguments: appt,
+                );
               }
             : null,
       ),

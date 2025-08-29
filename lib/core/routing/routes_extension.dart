@@ -22,4 +22,6 @@ extension Navigation on BuildContext {
   }
 
   void pop() => Navigator.of(this).pop();
+
+  void popUntilFirst() => Navigator.of(this).popUntil((route) => route.isFirst);
 }

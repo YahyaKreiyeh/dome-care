@@ -1,15 +1,20 @@
 import 'package:dome_care/core/constants/constants.dart';
-import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/routing/routes_extension.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
+import 'package:dome_care/core/themes/text_styles.dart';
+import 'package:dome_care/core/widgets/buttons/primary_button.dart';
 import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
 import 'package:dome_care/features/appointments/presentation/widget/appointment_date_chips.dart';
 import 'package:dome_care/features/appointments/presentation/widget/details_section.dart';
 import 'package:dome_care/features/appointments/presentation/widget/doctor_header.dart';
 import 'package:flutter/material.dart';
 
-class AppointmentDetailsView extends StatelessWidget {
-  const AppointmentDetailsView({super.key, required this.appointment});
+class AppointmentBookingConfirmationView extends StatelessWidget {
+  const AppointmentBookingConfirmationView({
+    super.key,
+    required this.appointment,
+  });
   final AppointmentEntity appointment;
 
   @override
@@ -18,7 +23,6 @@ class AppointmentDetailsView extends StatelessWidget {
       backgroundColor: AppColors.greyScaffoldBackground,
       appBar: AppBar(title: const Text('Appointment Details')),
       body: SafeArea(
-        bottom: false,
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -31,7 +35,6 @@ class AppointmentDetailsView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    VerticalSpace(3),
                     DoctorHeader(
                       image: appointment.doctor.image,
                       name: appointment.doctor.name,
@@ -42,18 +45,12 @@ class AppointmentDetailsView extends StatelessWidget {
                       date: appointment.date,
                       time: appointment.time,
                     ),
-                    VerticalSpace(14),
+                    VerticalSpace(30),
                     DetailsSection(
-                      status: appointment.status,
                       location: appointment.doctor.location,
                       phoneNumber: appointment.doctor.phoneNumber,
                       telephone: appointment.doctor.telephone,
-                      fee: appointment.fee,
-                      cancelReason:
-                          appointment.status == AppointmentStatus.canceled
-                          ? (appointment.cancelReason ??
-                                'Contact doctor for more information')
-                          : null,
+                      fee: null,
                     ),
                     VerticalSpace(16),
                   ],
@@ -62,6 +59,70 @@ class AppointmentDetailsView extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: _BookAppointment(appointment: appointment),
+    );
+  }
+}
+
+class _BookAppointment extends StatelessWidget {
+  const _BookAppointment({required this.appointment});
+
+  final AppointmentEntity appointment;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      color: AppColors.whiteScaffoldBackground,
+      padding: const EdgeInsetsDirectional.only(
+        start: horizontalPadding,
+        end: horizontalPadding,
+        top: 16,
+        bottom: 32,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _FeeField(value: appointment.fee),
+          VerticalSpace(16),
+          PrimaryButton(
+            text: 'Book Appointment',
+            onPressed: () => context.popUntilFirst(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _FeeField extends StatelessWidget {
+  const _FeeField({required this.value});
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.primaryLight),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text('Doctor’s Fee', style: TextStyles.primaryText40016),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyles.secondaryText40016,
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ],
       ),
     );
   }

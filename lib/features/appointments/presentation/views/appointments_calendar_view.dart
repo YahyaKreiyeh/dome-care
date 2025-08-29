@@ -14,14 +14,15 @@ import 'package:dome_care/features/appointments/presentation/widget/app_calendar
 import 'package:dome_care/features/appointments/presentation/widget/app_chip.dart';
 import 'package:flutter/material.dart';
 
-class MyAppointmentsView extends StatefulWidget {
-  const MyAppointmentsView({super.key});
+class AppointmentsCalendarView extends StatefulWidget {
+  const AppointmentsCalendarView({super.key});
 
   @override
-  State<MyAppointmentsView> createState() => _MyAppointmentsViewState();
+  State<AppointmentsCalendarView> createState() =>
+      _AppointmentsCalendarViewState();
 }
 
-class _MyAppointmentsViewState extends State<MyAppointmentsView> {
+class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
@@ -44,7 +45,7 @@ class _MyAppointmentsViewState extends State<MyAppointmentsView> {
     return Scaffold(
       appBar: AppBar(title: const Text('My Appointments')),
       body: SafeArea(
-        top: false,
+        bottom: false,
         child: Stack(
           children: [
             Column(
@@ -83,12 +84,12 @@ class _NewAppointmentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 16,
+      bottom: 24,
       left: horizontalPadding,
       right: horizontalPadding,
       child: PrimaryButton(
         text: 'Add New Appointment',
-        onPressed: () => context.pushNamed(Routes.searchDoctors),
+        onPressed: () => context.pushNamed(Routes.doctorsSearch),
       ),
     );
   }
@@ -107,7 +108,7 @@ class _AppointmentsList extends StatelessWidget {
           : ColoredBox(
               color: AppColors.white,
               child: ListView.builder(
-                padding: EdgeInsets.symmetric(vertical: 24),
+                padding: EdgeInsets.only(top: 24, bottom: 50),
                 itemCount: list.length,
                 itemBuilder: (context, index) {
                   final appointment = list[index];
