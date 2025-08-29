@@ -1,7 +1,10 @@
 import 'package:dome_care/core/constants/constants.dart';
+import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/core/helpers/color_helper.dart';
 import 'package:dome_care/core/helpers/formatters.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/routing/routes.dart';
+import 'package:dome_care/core/routing/routes_extension.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:dome_care/core/widgets/buttons/primary_button.dart';
@@ -276,57 +279,68 @@ class _AppointmentTile extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 32,
-            backgroundImage: AssetImage(appointment.image),
-            backgroundColor: AppColors.primaryLight,
+      child: Material(
+        child: InkWell(
+          splashColor: AppColors.primaryLight,
+          highlightColor: AppColors.primaryLight,
+          onTap: () => context.pushNamed(
+            Routes.appointmentDetails,
+            arguments: appointment,
           ),
-          HorizontalSpace(8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 32,
+                backgroundImage: AssetImage(appointment.image),
+                backgroundColor: AppColors.primaryLight,
+              ),
+              HorizontalSpace(8),
+              Expanded(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      flex: 7,
-                      child: Wrap(
-                        spacing: 4,
-                        runSpacing: 4,
-                        children: [
-                          _Chip(text: date),
-                          _Chip(text: appointment.time),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Align(
-                        child: _Chip(
-                          text: appointment.status,
-                          backgroundColor: backgroundColor,
-                          textStyle: TextStyle(
-                            color: textColor,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 12,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 7,
+                          child: Wrap(
+                            spacing: 4,
+                            runSpacing: 4,
+                            children: [
+                              _Chip(text: date),
+                              _Chip(text: appointment.time),
+                            ],
                           ),
                         ),
-                      ),
+                        Expanded(
+                          flex: 3,
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: _Chip(
+                              text: appointment.status.label,
+                              backgroundColor: backgroundColor,
+                              textStyle: TextStyle(
+                                color: textColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(appointment.name, style: TextStyles.primaryText70014),
+                    Text(
+                      appointment.specialization,
+                      style: TextStyles.secondaryText40012,
                     ),
                   ],
                 ),
-                Text(appointment.name, style: TextStyles.primaryText70014),
-                Text(
-                  appointment.specialization,
-                  style: TextStyles.secondaryText40012,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -334,6 +348,7 @@ class _AppointmentTile extends StatelessWidget {
 
 class _Chip extends StatelessWidget {
   const _Chip({required this.text, this.backgroundColor, this.textStyle});
+
   final String text;
   final Color? backgroundColor;
   final TextStyle? textStyle;
