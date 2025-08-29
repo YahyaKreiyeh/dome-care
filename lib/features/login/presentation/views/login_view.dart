@@ -96,7 +96,6 @@ class _LoginButton extends StatelessWidget {
         VerticalSpace(108),
         PrimaryButton(
           text: 'Log In',
-          textStyle: TextStyles.white70016,
           loading: isLoading,
           onPressed: canSubmit
               ? () => context.read<LoginCubit>().login()

@@ -4,6 +4,7 @@ import 'package:dome_care/core/helpers/formatters.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
+import 'package:dome_care/core/widgets/buttons/primary_button.dart';
 import 'package:dome_care/features/appointments/data/datasources/mock_appointment_data_source.dart';
 import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
 import 'package:flutter/material.dart';
@@ -38,28 +39,48 @@ class _MyAppointmentsViewState extends State<MyAppointmentsView> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('My Appointments')),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          VerticalSpace(3),
-          _AppointmentsCalendar(
-            focusedDay: _focusedDay,
-            selectedDay: _selectedDay,
-            eventLoader: _getEventsForDay,
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = DateTime(
-                  selectedDay.year,
-                  selectedDay.month,
-                  selectedDay.day,
-                );
-                _focusedDay = focusedDay;
-              });
-            },
-          ),
-          _AppointmentsList(list: list),
-        ],
+      body: SafeArea(
+        top: false,
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                VerticalSpace(3),
+                _AppointmentsCalendar(
+                  focusedDay: _focusedDay,
+                  selectedDay: _selectedDay,
+                  eventLoader: _getEventsForDay,
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      _selectedDay = DateTime(
+                        selectedDay.year,
+                        selectedDay.month,
+                        selectedDay.day,
+                      );
+                      _focusedDay = focusedDay;
+                    });
+                  },
+                ),
+                _AppointmentsList(list: list),
+              ],
+            ),
+            _NewAppointmentButton(),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class _NewAppointmentButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 16,
+      left: horizontalPadding,
+      right: horizontalPadding,
+      child: PrimaryButton(text: 'Add New Appointment', onPressed: () {}),
     );
   }
 }

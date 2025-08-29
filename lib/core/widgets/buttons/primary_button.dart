@@ -80,7 +80,7 @@ class PrimaryButton extends StatelessWidget {
                 Flexible(
                   child: Text(
                     text!,
-                    style: textStyle ?? TextStyles.white50017,
+                    style: textStyle ?? TextStyles.white70016,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                   ),

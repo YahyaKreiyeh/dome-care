@@ -215,7 +215,6 @@ class _GetStartedButton extends StatelessWidget {
         PrimaryButton(
           text: 'Get Started',
           onPressed: () => context.pushReplacementNamed(Routes.login),
-          textStyle: TextStyles.white50017,
         ),
         VerticalSpace(14),
       ],
