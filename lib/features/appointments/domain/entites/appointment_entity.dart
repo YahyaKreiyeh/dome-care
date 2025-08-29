@@ -1,28 +1,19 @@
 import 'package:dome_care/core/constants/enums.dart';
+import 'package:dome_care/features/appointments/domain/entites/doctor_entity.dart';
 
 class AppointmentEntity {
   final DateTime date;
   final String time;
-  final String image;
-  final String name;
-  final String specialization;
   final AppointmentStatus status;
-  final String location;
-  final String phoneNumber;
-  final String telephone;
+  final DoctorEntity doctor;
   final String fee;
   final String? cancelReason;
 
   AppointmentEntity({
     required this.date,
     required this.time,
-    required this.image,
-    required this.name,
-    required this.specialization,
     required this.status,
-    required this.location,
-    required this.phoneNumber,
-    required this.telephone,
+    required this.doctor,
     required this.fee,
     this.cancelReason,
   });

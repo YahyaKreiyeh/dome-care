@@ -38,6 +38,11 @@ class TextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.grey2Text,
   );
+  static TextStyle grey2Text40012 = const TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: AppColors.grey2Text,
+  );
   static TextStyle secondaryText40013 = const TextStyle(
     fontSize: 13,
     fontWeight: FontWeight.w400,
@@ -70,11 +75,6 @@ class TextStyles {
     fontSize: 15,
     fontWeight: FontWeight.w400,
     color: AppColors.primaryText,
-  );
-  static TextStyle greyText40015 = const TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.w400,
-    color: AppColors.greyText,
   );
 
   static TextStyle primaryText50015 = const TextStyle(
@@ -326,10 +326,10 @@ class TextStyles {
     color: AppColors.appPrimaryText,
   );
 
-  static TextStyle lightGrey70016 = const TextStyle(
+  static TextStyle secondaryText70016 = const TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w700,
-    color: AppColors.greyText,
+    color: AppColors.secondaryText,
   );
 
   static TextStyle primaryText60024 = const TextStyle(

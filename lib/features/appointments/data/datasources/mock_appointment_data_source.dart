@@ -3,21 +3,9 @@ import 'dart:math';
 import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/core/style/assets/assets.gen.dart';
 import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
+import 'package:dome_care/features/appointments/domain/entites/doctor_entity.dart';
 
 final _rnd = Random();
-
-String _randomAvatar() {
-  final i = _rnd.nextInt(3) + 1;
-  switch (i) {
-    case 1:
-      return Assets.images.avatar1.path;
-    case 2:
-      return Assets.images.avatar2.path;
-    case 3:
-    default:
-      return Assets.images.avatar3.path;
-  }
-}
 
 AppointmentStatus _randomStatus() {
   const statuses = [
@@ -52,33 +40,68 @@ const _defaultReason =
     'Why you want to cancel the Appointment? '
     'Why you want to cancel the Appointment?';
 
+final List<DoctorEntity> mockDoctors = [
+  DoctorEntity(
+    image: Assets.images.avatar1.path,
+    name: 'Dr. Benjamin Li',
+    specialization: 'Psychiatrist',
+    location: _defaultLocation,
+    phoneNumber: '+963 999 999 999',
+    telephone: '011 214578512',
+  ),
+  DoctorEntity(
+    image: Assets.images.avatar2.path,
+    name: 'Dr. Jane Smith',
+    specialization: 'Dermatologist',
+    location: _defaultLocation,
+    phoneNumber: _randomMobile(),
+    telephone: _randomTelephone(),
+  ),
+  DoctorEntity(
+    image: Assets.images.avatar3.path,
+    name: 'Dr. Albert Lee',
+    specialization: 'Dentist',
+    location: _defaultLocation,
+    phoneNumber: _randomMobile(),
+    telephone: _randomTelephone(),
+  ),
+  DoctorEntity(
+    image: Assets.images.avatar1.path,
+    name: 'Dr. Emily Brown',
+    specialization: 'Neurologist',
+    location: _defaultLocation,
+    phoneNumber: _randomMobile(),
+    telephone: _randomTelephone(),
+  ),
+  DoctorEntity(
+    image: Assets.images.avatar3.path,
+    name: 'Dr. David Wilson',
+    specialization: 'Orthopedic',
+    location: _defaultLocation,
+    phoneNumber: _randomMobile(),
+    telephone: _randomTelephone(),
+  ),
+];
+
+DoctorEntity _randomDoctor() => mockDoctors[_rnd.nextInt(mockDoctors.length)];
+
+/// ---------- Mock Appointments (use nested doctor) ----------
 final Map<DateTime, List<AppointmentEntity>> mockEvents = {
   DateTime(2025, 8, 23): [
     AppointmentEntity(
       date: DateTime(2025, 8, 23),
       time: "10:00 AM",
-      image: _randomAvatar(),
-      name: "Dr. Benjamin Li",
-      specialization: "Psychiatrist",
       status: AppointmentStatus.canceled,
-      location: _defaultLocation,
-      phoneNumber: '+963 999 999 999',
-      telephone: '011 214578512',
+      doctor: mockDoctors[0], // Dr. Benjamin Li
       fee: '40,000 SYR',
       cancelReason: _defaultReason,
     ),
     AppointmentEntity(
       date: DateTime(2025, 8, 23),
       time: "02:30 PM",
-      image: _randomAvatar(),
-      name: "Dr. Jane Smith",
-      specialization: "Dermatologist",
       status: _randomStatus(),
-      location: _defaultLocation,
-      phoneNumber: _randomMobile(),
-      telephone: _randomTelephone(),
+      doctor: mockDoctors[1], // Dr. Jane Smith
       fee: _randomFee(),
-      cancelReason: _defaultReason,
     ),
   ],
 
@@ -86,41 +109,23 @@ final Map<DateTime, List<AppointmentEntity>> mockEvents = {
     AppointmentEntity(
       date: DateTime(2025, 8, 4),
       time: "09:00 AM",
-      image: _randomAvatar(),
-      name: "Dr. Albert Lee",
-      specialization: "Dentist",
       status: _randomStatus(),
-      location: _defaultLocation,
-      phoneNumber: _randomMobile(),
-      telephone: _randomTelephone(),
+      doctor: mockDoctors[2], // Dr. Albert Lee
       fee: _randomFee(),
-      cancelReason: _defaultReason,
     ),
     AppointmentEntity(
       date: DateTime(2025, 8, 4),
       time: "01:00 PM",
-      image: _randomAvatar(),
-      name: "Dr. Emily Brown",
-      specialization: "Neurologist",
       status: _randomStatus(),
-      location: _defaultLocation,
-      phoneNumber: _randomMobile(),
-      telephone: _randomTelephone(),
+      doctor: mockDoctors[3], // Dr. Emily Brown
       fee: _randomFee(),
-      cancelReason: _defaultReason,
     ),
     AppointmentEntity(
       date: DateTime(2025, 8, 4),
       time: "03:45 PM",
-      image: _randomAvatar(),
-      name: "Dr. David Wilson",
-      specialization: "Orthopedic",
       status: _randomStatus(),
-      location: _defaultLocation,
-      phoneNumber: _randomMobile(),
-      telephone: _randomTelephone(),
+      doctor: mockDoctors[4], // Dr. David Wilson
       fee: _randomFee(),
-      cancelReason: _defaultReason,
     ),
   ],
 
@@ -129,15 +134,10 @@ final Map<DateTime, List<AppointmentEntity>> mockEvents = {
     (i) => AppointmentEntity(
       date: DateTime(2025, 8, 7),
       time: "${9 + (i % 8)}:00 AM",
-      image: _randomAvatar(),
-      name: "Doctor ${i + 1}",
-      specialization: "Specialization ${(i % 5) + 1}",
       status: _randomStatus(),
-      location: _defaultLocation,
-      phoneNumber: _randomMobile(),
-      telephone: _randomTelephone(),
+      doctor: _randomDoctor(),
       fee: _randomFee(),
-      cancelReason: _defaultReason,
+      cancelReason: (i % 7 == 0) ? _defaultReason : null,
     ),
   ),
 };

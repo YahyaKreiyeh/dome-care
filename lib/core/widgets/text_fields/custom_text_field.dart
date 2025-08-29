@@ -1,3 +1,4 @@
+import 'package:dome_care/core/constants/constants.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
@@ -26,7 +27,9 @@ class CustomTextField extends StatelessWidget {
   final Function(PointerDownEvent)? onTapOutside;
   final List<TextInputFormatter>? inputFormatters;
   final BoxConstraints? prefixIconConstraints;
+  final BoxConstraints? suffixIconConstraints;
   final TextStyle? textStyle;
+  final Color? fillColor;
 
   const CustomTextField({
     this.initialValue,
@@ -51,50 +54,65 @@ class CustomTextField extends StatelessWidget {
     this.maxLength,
     this.inputFormatters,
     this.prefixIconConstraints,
+    this.suffixIconConstraints,
     this.textStyle,
+    this.fillColor,
   });
 
   @override
-  Widget build(BuildContext context) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      if (labelText != null && labelText != '')
-        Column(
-          children: [
-            Text(labelText!, style: TextStyles.primaryText40015),
-            const VerticalSpace(8),
-          ],
+  Widget build(BuildContext context) {
+    final noBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(radius),
+      borderSide: BorderSide.none,
+    );
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (labelText != null && labelText != '')
+          Column(
+            children: [
+              Text(labelText!, style: TextStyles.primaryText40015),
+              const VerticalSpace(8),
+            ],
+          ),
+        TextFormField(
+          maxLength: maxLength,
+          inputFormatters: inputFormatters,
+          onTapOutside: onTapOutside ?? (_) => FocusScope.of(context).unfocus(),
+          style: textStyle,
+          keyboardType: keyboardType,
+          maxLines: maxLines,
+          onEditingComplete: onEditingComplete,
+          controller: controller,
+          initialValue: controller == null ? initialValue : null,
+          onChanged: onChanged,
+          readOnly: disabled,
+          canRequestFocus: !disabled,
+          obscureText: obscureText,
+          textInputAction: textInputAction,
+          decoration: InputDecoration(
+            fillColor:
+                fillColor ??
+                (disabled
+                    ? AppColors.neutral100.withAlpha((0.5 * 255).toInt())
+                    : AppColors.inputFillWhite),
+            filled: filled,
+            hintText: hintText,
+            errorText: errorText,
+            counterText: '',
+            border: showBorder ? null : noBorder,
+            enabledBorder: showBorder ? null : noBorder,
+            focusedBorder: showBorder ? null : noBorder,
+
+            suffixIcon: suffixIcon,
+            prefixIcon: prefixIcon,
+            prefixIconConstraints: prefixIconConstraints,
+            suffixIconConstraints: suffixIconConstraints,
+          ),
         ),
-      TextFormField(
-        maxLength: maxLength,
-        inputFormatters: inputFormatters,
-        onTapOutside: onTapOutside ?? (_) => FocusScope.of(context).unfocus(),
-        style: textStyle,
-        keyboardType: keyboardType,
-        maxLines: maxLines,
-        onEditingComplete: onEditingComplete,
-        controller: controller,
-        initialValue: controller == null ? initialValue : null,
-        onChanged: onChanged,
-        readOnly: disabled,
-        canRequestFocus: !disabled,
-        obscureText: obscureText,
-        textInputAction: textInputAction,
-        decoration: InputDecoration(
-          fillColor: disabled
-              ? AppColors.neutral100.withAlpha((0.5 * 255).toInt())
-              : AppColors.inputFillWhite,
-          filled: filled,
-          hintText: hintText,
-          errorText: errorText,
-          counterText: '',
-          focusedBorder: showBorder ? null : InputBorder.none,
-          suffixIcon: suffixIcon,
-          prefixIcon: prefixIcon,
-          prefixIconConstraints: prefixIconConstraints,
-        ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }

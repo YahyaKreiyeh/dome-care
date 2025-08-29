@@ -84,7 +84,10 @@ class _NewAppointmentButton extends StatelessWidget {
       bottom: 16,
       left: horizontalPadding,
       right: horizontalPadding,
-      child: PrimaryButton(text: 'Add New Appointment', onPressed: () {}),
+      child: PrimaryButton(
+        text: 'Add New Appointment',
+        onPressed: () => context.pushNamed(Routes.searchDoctors),
+      ),
     );
   }
 }
@@ -277,7 +280,7 @@ class _AppointmentTile extends StatelessWidget {
     final (backgroundColor, textColor) = ColorHelper.statusColors(
       appointment.status,
     );
-    final avatarBg = ColorHelper.avatarColor(appointment.image);
+    final avatarBg = ColorHelper.avatarColor(appointment.doctor.image);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
@@ -292,9 +295,9 @@ class _AppointmentTile extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                radius: 32,
-                backgroundImage: AssetImage(appointment.image),
+                radius: avatarRadius,
                 backgroundColor: avatarBg,
+                backgroundImage: AssetImage(appointment.doctor.image),
               ),
               HorizontalSpace(8),
               Expanded(
@@ -331,9 +334,12 @@ class _AppointmentTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Text(appointment.name, style: TextStyles.primaryText70014),
                     Text(
-                      appointment.specialization,
+                      appointment.doctor.name,
+                      style: TextStyles.primaryText70014,
+                    ),
+                    Text(
+                      appointment.doctor.specialization,
                       style: TextStyles.secondaryText40012,
                     ),
                   ],

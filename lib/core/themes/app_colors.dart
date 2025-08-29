@@ -53,7 +53,6 @@ class AppColors {
   static const whiteText = Color(0xFFFFFFFF);
   static const redText = Color(0xFFC42020);
   static const textfieldLabel = Color(0xFF808DA4);
-  static const greyText = Color(0xFF8F9BBA);
   static const grey2Text = Color(0xFF657397);
 
   // Bottom Navigation Bar
@@ -86,6 +85,7 @@ class AppColors {
   static const inputBorderGrey = Color(0xffDDDDDD);
   static const inputFillWhite = Color(0xffFFFFFF);
   static const inputHintText = Color(0xff8F9BBA);
+  static const inputFillGrey = Color(0xffF8FAFF);
 
   // Buttons
   static const buttonBorderGrey = Color(0xffE2E5F2);

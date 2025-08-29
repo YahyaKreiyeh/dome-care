@@ -50,19 +50,21 @@ class _Body extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           VerticalSpace(16),
-          _DoctorImage(image: appointment.image),
+          _DoctorImage(image: appointment.doctor.image),
           VerticalSpace(14),
-          _DoctorName(name: appointment.name),
+          _DoctorName(name: appointment.doctor.name),
           VerticalSpace(2),
-          _DoctorSpecialization(specialization: appointment.specialization),
+          _DoctorSpecialization(
+            specialization: appointment.doctor.specialization,
+          ),
           VerticalSpace(4),
           _AppointmentDate(date: appointment.date, time: appointment.time),
           VerticalSpace(30),
           _DetailsSection(
             status: appointment.status,
-            location: appointment.location,
-            phoneNumber: appointment.phoneNumber,
-            telephone: appointment.telephone,
+            location: appointment.doctor.location,
+            phoneNumber: appointment.doctor.phoneNumber,
+            telephone: appointment.doctor.telephone,
             fee: appointment.fee,
             cancelReason: appointment.cancelReason,
           ),
@@ -216,12 +218,12 @@ class _AppointmentDate extends StatelessWidget {
         ChipWidget(
           text: formattedDate,
           backgroundColor: AppColors.chipGrey,
-          textStyle: TextStyles.lightGrey70016,
+          textStyle: TextStyles.secondaryText70016,
         ),
         ChipWidget(
           text: time,
           backgroundColor: AppColors.chipGrey,
-          textStyle: TextStyles.lightGrey70016,
+          textStyle: TextStyles.secondaryText70016,
         ),
       ],
     );

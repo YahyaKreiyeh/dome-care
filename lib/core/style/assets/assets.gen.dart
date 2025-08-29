@@ -17,6 +17,9 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/close.svg
+  SvgGenImage get close => const SvgGenImage('assets/icons/close.svg');
+
   /// File path: assets/icons/location.svg
   SvgGenImage get location => const SvgGenImage('assets/icons/location.svg');
 
@@ -26,11 +29,21 @@ class $AssetsIconsGen {
   /// File path: assets/icons/phone.svg
   SvgGenImage get phone => const SvgGenImage('assets/icons/phone.svg');
 
+  /// File path: assets/icons/search.svg
+  SvgGenImage get search => const SvgGenImage('assets/icons/search.svg');
+
   /// File path: assets/icons/telephone.svg
   SvgGenImage get telephone => const SvgGenImage('assets/icons/telephone.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [location, money, phone, telephone];
+  List<SvgGenImage> get values => [
+    close,
+    location,
+    money,
+    phone,
+    search,
+    telephone,
+  ];
 }
 
 class $AssetsImagesGen {

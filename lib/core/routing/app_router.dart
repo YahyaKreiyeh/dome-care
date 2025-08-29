@@ -3,6 +3,7 @@ import 'package:dome_care/core/routing/routes.dart';
 import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
 import 'package:dome_care/features/appointments/presentation/views/appointment_details_view.dart';
 import 'package:dome_care/features/appointments/presentation/views/my_appointments_view.dart';
+import 'package:dome_care/features/appointments/presentation/views/search_doctors_view.dart';
 import 'package:dome_care/features/login/presentation/cubit/login_cubit.dart';
 import 'package:dome_care/features/login/presentation/views/login_view.dart';
 import 'package:dome_care/onboarding_view.dart';
@@ -24,7 +25,8 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => AppointmentDetailsView(appointment: appt),
         );
-
+      case Routes.searchDoctors:
+        return MaterialPageRoute(builder: (_) => const SearchDoctorsView());
       case Routes.myAppointments:
         return MaterialPageRoute(builder: (_) => MyAppointmentsView());
       case Routes.onboarding:
