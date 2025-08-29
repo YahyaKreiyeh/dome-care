@@ -21,7 +21,11 @@ class AuthenticationRemoteDataSourceImpl
   }) async {
     try {
       return await _service.login(
-        LoginRequestDto(username: username, password: password),
+        LoginRequestDto(
+          username: username,
+          password: password,
+          expiresInMins: '1',
+        ),
       );
     } on DioException {
       rethrow;

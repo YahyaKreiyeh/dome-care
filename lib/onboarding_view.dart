@@ -1,4 +1,5 @@
 import 'package:dome_care/core/constants/constants.dart';
+import 'package:dome_care/core/helpers/shared_pref_helper.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
 import 'package:dome_care/core/routing/routes.dart';
 import 'package:dome_care/core/routing/routes_extension.dart';
@@ -214,7 +215,15 @@ class _GetStartedButton extends StatelessWidget {
       children: [
         PrimaryButton(
           text: 'Get Started',
-          onPressed: () => context.pushReplacementNamed(Routes.login),
+          onPressed: () async {
+            await SharedPrefHelper.setData(
+              SharedPrefKeys.isOnboardingCompleted,
+              true,
+            );
+            if (context.mounted) {
+              context.pushReplacementNamed(Routes.login);
+            }
+          },
         ),
         VerticalSpace(14),
       ],

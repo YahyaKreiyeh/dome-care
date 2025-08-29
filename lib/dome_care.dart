@@ -3,6 +3,8 @@ import 'package:dome_care/core/themes/theme.dart';
 import 'package:dome_care/features/snackbar/views/snackbar_view.dart';
 import 'package:flutter/material.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class DomeCare extends StatelessWidget {
   const DomeCare({super.key, required this.initialRoute});
   final String initialRoute;
@@ -10,6 +12,7 @@ class DomeCare extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Dome Care',
       debugShowCheckedModeBanner: false,
       theme: getTheme(),

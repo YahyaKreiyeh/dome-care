@@ -10,12 +10,14 @@ _LoginRequestDto _$LoginRequestDtoFromJson(Map<String, dynamic> json) =>
     _LoginRequestDto(
       username: json['username'] as String,
       password: json['password'] as String,
+      expiresInMins: json['expiresInMins'] as String?,
     );
 
 Map<String, dynamic> _$LoginRequestDtoToJson(_LoginRequestDto instance) =>
     <String, dynamic>{
       'username': instance.username,
       'password': instance.password,
+      'expiresInMins': instance.expiresInMins,
     };
 
 _LoginResponseDto _$LoginResponseDtoFromJson(Map<String, dynamic> json) =>

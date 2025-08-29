@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:dome_care/core/constants/constants.dart';
 import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/core/helpers/color_helper.dart';
 import 'package:dome_care/core/helpers/formatters.dart';
 import 'package:dome_care/core/helpers/shared_pref_helper.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/networking/dio_factory.dart';
 import 'package:dome_care/core/routing/routes.dart';
 import 'package:dome_care/core/routing/routes_extension.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
@@ -13,7 +15,9 @@ import 'package:dome_care/features/appointments/data/datasources/mock_appointmen
 import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
 import 'package:dome_care/features/appointments/presentation/widget/app_calendar.dart';
 import 'package:dome_care/features/appointments/presentation/widget/app_chip.dart';
+import 'package:dome_care/features/snackbar/bloc/snackbar_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppointmentsCalendarView extends StatefulWidget {
   const AppointmentsCalendarView({super.key});
@@ -47,6 +51,7 @@ class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
       appBar: AppBar(
         title: const Text('My Appointments'),
         actions: [
+          // HACK: this buttons for user session testing
           IconButton(
             onPressed: () async {
               await SharedPrefHelper.deleteSecured(SharedPrefKeys.userToken);
@@ -55,6 +60,53 @@ class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
               }
             },
             icon: const Icon(Icons.logout, color: AppColors.grey),
+            tooltip: 'Logout',
+          ),
+
+          IconButton(
+            onPressed: () async {
+              await SharedPrefHelper.deleteSecured(SharedPrefKeys.userToken);
+              await SharedPrefHelper.deleteSecured(SharedPrefKeys.refreshToken);
+              if (context.mounted) {
+                context.read<SnackbarBloc>().add(
+                  AddSnackbarEvent(
+                    message:
+                        'Cleared access + refresh. Now tap "Test Refresh".',
+                    type: SnackbarType.success,
+                  ),
+                );
+              }
+            },
+            icon: const Icon(Icons.delete_forever, color: AppColors.grey),
+            tooltip: 'Clear both tokens',
+          ),
+
+          IconButton(
+            onPressed: () async {
+              final dio = await DioFactory.getDio();
+              try {
+                await dio.get('https://dummyjson.com/auth/me');
+                if (context.mounted) {
+                  context.read<SnackbarBloc>().add(
+                    AddSnackbarEvent(
+                      message: 'Test request succeeded',
+                      type: SnackbarType.success,
+                    ),
+                  );
+                }
+              } on DioException catch (e) {
+                if (context.mounted) {
+                  context.read<SnackbarBloc>().add(
+                    AddSnackbarEvent(
+                      message: 'Test request failed: ${e.message}',
+                      type: SnackbarType.error,
+                    ),
+                  );
+                }
+              }
+            },
+            icon: const Icon(Icons.refresh, color: AppColors.grey),
+            tooltip: 'Test Refresh',
           ),
         ],
       ),

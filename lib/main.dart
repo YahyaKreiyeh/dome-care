@@ -16,9 +16,14 @@ Future<void> main() async {
   final token = await SharedPrefHelper.getSecuredString(
     SharedPrefKeys.userToken,
   );
-  final startRoute = token.isNotEmpty
-      ? Routes.appointmentsCalendar
-      : Routes.login;
+  final isOnboardingCompleted = await SharedPrefHelper.getBool(
+    SharedPrefKeys.isOnboardingCompleted,
+  );
+  final startRoute = isOnboardingCompleted
+      ? token.isNotEmpty
+            ? Routes.appointmentsCalendar
+            : Routes.login
+      : Routes.onboarding;
 
   runApp(
     BlocProvider(

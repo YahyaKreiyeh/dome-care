@@ -9,6 +9,7 @@ abstract class LoginRequestDto with _$LoginRequestDto {
   const factory LoginRequestDto({
     required String username,
     required String password,
+    String? expiresInMins,
   }) = _LoginRequestDto;
 
   factory LoginRequestDto.fromJson(Map<String, dynamic> json) =>

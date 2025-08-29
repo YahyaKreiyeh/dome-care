@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LoginRequestDto {
 
- String get username; String get password;
+ String get username; String get password; String? get expiresInMins;
 /// Create a copy of LoginRequestDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $LoginRequestDtoCopyWith<LoginRequestDto> get copyWith => _$LoginRequestDtoCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginRequestDto&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginRequestDto&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password)&&(identical(other.expiresInMins, expiresInMins) || other.expiresInMins == expiresInMins));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,username,password);
+int get hashCode => Object.hash(runtimeType,username,password,expiresInMins);
 
 @override
 String toString() {
-  return 'LoginRequestDto(username: $username, password: $password)';
+  return 'LoginRequestDto(username: $username, password: $password, expiresInMins: $expiresInMins)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $LoginRequestDtoCopyWith<$Res>  {
   factory $LoginRequestDtoCopyWith(LoginRequestDto value, $Res Function(LoginRequestDto) _then) = _$LoginRequestDtoCopyWithImpl;
 @useResult
 $Res call({
- String username, String password
+ String username, String password, String? expiresInMins
 });
 
 
@@ -65,11 +65,12 @@ class _$LoginRequestDtoCopyWithImpl<$Res>
 
 /// Create a copy of LoginRequestDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? username = null,Object? password = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? username = null,Object? password = null,Object? expiresInMins = freezed,}) {
   return _then(_self.copyWith(
 username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
-as String,
+as String,expiresInMins: freezed == expiresInMins ? _self.expiresInMins : expiresInMins // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String username,  String password)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String username,  String password,  String? expiresInMins)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LoginRequestDto() when $default != null:
-return $default(_that.username,_that.password);case _:
+return $default(_that.username,_that.password,_that.expiresInMins);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.username,_that.password);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String username,  String password)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String username,  String password,  String? expiresInMins)  $default,) {final _that = this;
 switch (_that) {
 case _LoginRequestDto():
-return $default(_that.username,_that.password);case _:
+return $default(_that.username,_that.password,_that.expiresInMins);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.username,_that.password);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String username,  String password)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String username,  String password,  String? expiresInMins)?  $default,) {final _that = this;
 switch (_that) {
 case _LoginRequestDto() when $default != null:
-return $default(_that.username,_that.password);case _:
+return $default(_that.username,_that.password,_that.expiresInMins);case _:
   return null;
 
 }
@@ -210,11 +211,12 @@ return $default(_that.username,_that.password);case _:
 @JsonSerializable()
 
 class _LoginRequestDto implements LoginRequestDto {
-  const _LoginRequestDto({required this.username, required this.password});
+  const _LoginRequestDto({required this.username, required this.password, this.expiresInMins});
   factory _LoginRequestDto.fromJson(Map<String, dynamic> json) => _$LoginRequestDtoFromJson(json);
 
 @override final  String username;
 @override final  String password;
+@override final  String? expiresInMins;
 
 /// Create a copy of LoginRequestDto
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginRequestDto&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginRequestDto&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password)&&(identical(other.expiresInMins, expiresInMins) || other.expiresInMins == expiresInMins));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,username,password);
+int get hashCode => Object.hash(runtimeType,username,password,expiresInMins);
 
 @override
 String toString() {
-  return 'LoginRequestDto(username: $username, password: $password)';
+  return 'LoginRequestDto(username: $username, password: $password, expiresInMins: $expiresInMins)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$LoginRequestDtoCopyWith<$Res> implements $LoginRequestDto
   factory _$LoginRequestDtoCopyWith(_LoginRequestDto value, $Res Function(_LoginRequestDto) _then) = __$LoginRequestDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String username, String password
+ String username, String password, String? expiresInMins
 });
 
 
@@ -266,11 +268,12 @@ class __$LoginRequestDtoCopyWithImpl<$Res>
 
 /// Create a copy of LoginRequestDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? username = null,Object? password = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? username = null,Object? password = null,Object? expiresInMins = freezed,}) {
   return _then(_LoginRequestDto(
 username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
-as String,
+as String,expiresInMins: freezed == expiresInMins ? _self.expiresInMins : expiresInMins // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
