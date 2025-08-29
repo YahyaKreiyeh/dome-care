@@ -211,7 +211,7 @@ class _PhoneNumberInput extends StatelessWidget {
         onTap: () => _showCountryPicker(context),
         borderRadius: BorderRadius.circular(8),
         child: Padding(
-          padding: const EdgeInsets.only(left: 12),
+          padding: const EdgeInsetsDirectional.only(start: 12),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

@@ -25,6 +25,7 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   intl: ^0.20.2
   table_calendar: ^3.2.0
+  flutter_svg: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -38,9 +39,12 @@ dev_dependencies:
 
 flutter_gen:
   output: lib/core/style/assets
+  integrations:
+    flutter_svg: true
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/
+    - assets/icons/

@@ -32,6 +32,12 @@ class TextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.secondaryText,
   );
+
+  static TextStyle grey2Text40014 = const TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.grey2Text,
+  );
   static TextStyle secondaryText40013 = const TextStyle(
     fontSize: 13,
     fontWeight: FontWeight.w400,
@@ -318,6 +324,12 @@ class TextStyles {
     fontSize: 13,
     fontWeight: FontWeight.w700,
     color: AppColors.appPrimaryText,
+  );
+
+  static TextStyle lightGrey70016 = const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    color: AppColors.greyText,
   );
 
   static TextStyle primaryText60024 = const TextStyle(

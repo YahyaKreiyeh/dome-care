@@ -10,6 +10,7 @@ import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:dome_care/core/widgets/buttons/primary_button.dart';
 import 'package:dome_care/features/appointments/data/datasources/mock_appointment_data_source.dart';
 import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
+import 'package:dome_care/features/appointments/presentation/widget/chip_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -276,6 +277,7 @@ class _AppointmentTile extends StatelessWidget {
     final (backgroundColor, textColor) = ColorHelper.statusColors(
       appointment.status,
     );
+    final avatarBg = ColorHelper.avatarColor(appointment.image);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
@@ -292,7 +294,7 @@ class _AppointmentTile extends StatelessWidget {
               CircleAvatar(
                 radius: 32,
                 backgroundImage: AssetImage(appointment.image),
-                backgroundColor: AppColors.primaryLight,
+                backgroundColor: avatarBg,
               ),
               HorizontalSpace(8),
               Expanded(
@@ -306,18 +308,17 @@ class _AppointmentTile extends StatelessWidget {
                           flex: 7,
                           child: Wrap(
                             spacing: 4,
-                            runSpacing: 4,
                             children: [
-                              _Chip(text: date),
-                              _Chip(text: appointment.time),
+                              ChipWidget(text: date),
+                              ChipWidget(text: appointment.time),
                             ],
                           ),
                         ),
                         Expanded(
                           flex: 3,
                           child: Align(
-                            alignment: Alignment.centerRight,
-                            child: _Chip(
+                            alignment: AlignmentDirectional.centerEnd,
+                            child: ChipWidget(
                               text: appointment.status.label,
                               backgroundColor: backgroundColor,
                               textStyle: TextStyle(
@@ -341,26 +342,6 @@ class _AppointmentTile extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _Chip extends StatelessWidget {
-  const _Chip({required this.text, this.backgroundColor, this.textStyle});
-
-  final String text;
-  final Color? backgroundColor;
-  final TextStyle? textStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Chip(
-      backgroundColor: backgroundColor ?? AppColors.primaryLight,
-      label: Text(
-        text,
-        style: textStyle ?? TextStyles.primary70013,
-        overflow: TextOverflow.ellipsis,
       ),
     );
   }

@@ -20,12 +20,19 @@ class AppColors {
   static const lightOrange = Color(0xFFFFF4DD);
   static const red = Color(0xFFFF2C2C);
   static const lightRed = Color(0xFFFFE5E5);
+  static const chipGrey = Color(0xFFF4F8FF);
+
   static const yellow = Color(0xFFFFD43A);
   static const black = Color(0xFF000000);
   static const white = Color(0xFFFFFFFF);
   static const grey = Color(0xFF9E9E9E);
   static const notSelectedGrey = Color(0xFFF4F8FF);
   static const transparent = Colors.transparent;
+
+  // Avatar
+  static const avatar1 = Color(0xFFC6CBD0);
+  static const avatar2 = Color(0xFFF7C354);
+  static const avatar3 = Color(0xFFFEADBE);
 
   // Neutrals
   static const neutral100 = Color(0xFFF9F9F9);
@@ -46,7 +53,8 @@ class AppColors {
   static const whiteText = Color(0xFFFFFFFF);
   static const redText = Color(0xFFC42020);
   static const textfieldLabel = Color(0xFF808DA4);
-  static const greyText = Color(0xFF9E9E9E);
+  static const greyText = Color(0xFF8F9BBA);
+  static const grey2Text = Color(0xFF657397);
 
   // Bottom Navigation Bar
   static const bottomNavBarHighLight = Color(0x1FFFFFFF);

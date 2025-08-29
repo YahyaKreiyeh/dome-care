@@ -3,10 +3,13 @@ import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/core/helpers/color_helper.dart';
 import 'package:dome_care/core/helpers/formatters.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/style/assets/assets.gen.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
+import 'package:dome_care/features/appointments/presentation/widget/chip_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AppointmentDetailsView extends StatelessWidget {
   const AppointmentDetailsView({super.key, required this.appointment});
@@ -15,161 +18,16 @@ class AppointmentDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = AppFormatter.formatDate(appointment.date);
-    final (statusBg, statusTextColor) = ColorHelper.statusColors(
-      appointment.status,
-    );
-
     return Scaffold(
       backgroundColor: AppColors.greyScaffoldBackground,
-      appBar: AppBar(
-        title: const Text('Appointment Details'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Appointment Details')),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.only(
-            left: horizontalPadding,
-            right: horizontalPadding,
-            bottom: 24,
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top banner image (from doctor profile)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Image.asset(appointment.image, fit: BoxFit.cover),
-                ),
-              ),
-              VerticalSpace(16),
-
-              // Name + specialization
-              Text(appointment.name, style: TextStyles.primaryText70016),
-              VerticalSpace(2),
-              Text(
-                appointment.specialization,
-                style: TextStyles.secondaryText40014,
-              ),
-
-              VerticalSpace(16),
-
-              // Date + time chips
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  _Chip(text: date),
-                  _Chip(text: appointment.time),
-                ],
-              ),
-
-              VerticalSpace(16),
-
-              // Details card
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    // header row: "Details" + status chip
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'Details',
-                            style: TextStyles.primaryText70016,
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: statusBg,
-                            borderRadius: BorderRadius.circular(999),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          child: Text(
-                            appointment.status.label,
-                            style: TextStyle(
-                              color: statusTextColor,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    VerticalSpace(12),
-
-                    _DetailRow(
-                      label: 'Location',
-                      value:
-                          appointment.location ??
-                          'Al-Baramkeh, Damascus, Syria',
-                      trailing: const Icon(
-                        Icons.location_on_outlined,
-                        size: 20,
-                        color: AppColors.primaryText,
-                      ),
-                      onTap: () {}, // hook up to maps if you want
-                    ),
-                    _DetailRow(
-                      label: 'Phone number',
-                      value: appointment.phoneNumber ?? '+963 999 999 999',
-                      trailing: const Icon(
-                        Icons.call,
-                        size: 20,
-                        color: AppColors.primaryText,
-                      ),
-                      onTap: () {}, // hook up to dialer if needed
-                    ),
-                    _DetailRow(
-                      label: 'Telephone',
-                      value: appointment.telephone ?? '011 214578512',
-                      trailing: const Icon(
-                        Icons.phone_in_talk_outlined,
-                        size: 20,
-                        color: AppColors.primaryText,
-                      ),
-                    ),
-                    _DetailRow(
-                      label: 'Doctor Fee',
-                      value: appointment.fee ?? '40,000 SYR',
-                      trailing: const Icon(
-                        Icons.payments_outlined,
-                        size: 20,
-                        color: AppColors.primaryText,
-                      ),
-                    ),
-
-                    // Canceled reason (only when canceled)
-                    if (appointment.status == AppointmentStatus.canceled) ...[
-                      VerticalSpace(12),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Canceled Reason',
-                          style: TextStyles.primaryText70016,
-                        ),
-                      ),
-                      VerticalSpace(8),
-                      Text(
-                        appointment.cancelReason ??
-                            'Why you want to cancel the Appointment? Why you want to cancel the Appointment? '
-                                'Why you want to cancel the Appointment? Why you want to cancel the Appointment?',
-                        style: TextStyles.secondaryText40014,
-                      ),
-                    ],
-                  ],
-                ),
-              ),
+              VerticalSpace(4),
+              _Body(appointment: appointment),
             ],
           ),
         ),
@@ -178,19 +36,215 @@ class AppointmentDetailsView extends StatelessWidget {
   }
 }
 
-/// ——— Helpers ———
+class _Body extends StatelessWidget {
+  const _Body({required this.appointment});
 
-class _Chip extends StatelessWidget {
-  const _Chip({required this.text});
-  final String text;
+  final AppointmentEntity appointment;
 
   @override
   Widget build(BuildContext context) {
-    return Chip(
-      backgroundColor: AppColors.primaryLight,
-      label: Text(text, style: TextStyles.primary70013),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
+      color: AppColors.whiteScaffoldBackground,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          VerticalSpace(16),
+          _DoctorImage(image: appointment.image),
+          VerticalSpace(14),
+          _DoctorName(name: appointment.name),
+          VerticalSpace(2),
+          _DoctorSpecialization(specialization: appointment.specialization),
+          VerticalSpace(4),
+          _AppointmentDate(date: appointment.date, time: appointment.time),
+          VerticalSpace(30),
+          _DetailsSection(
+            status: appointment.status,
+            location: appointment.location,
+            phoneNumber: appointment.phoneNumber,
+            telephone: appointment.telephone,
+            fee: appointment.fee,
+            cancelReason: appointment.cancelReason,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DetailsSection extends StatelessWidget {
+  const _DetailsSection({
+    required this.status,
+    required this.location,
+    required this.phoneNumber,
+    required this.telephone,
+    required this.fee,
+    this.cancelReason,
+  });
+
+  final AppointmentStatus status;
+  final String location;
+  final String phoneNumber;
+  final String telephone;
+  final String fee;
+  final String? cancelReason;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
+      child: Column(
+        children: [
+          _StatusRow(status: status),
+          VerticalSpace(17),
+          _DetailRow(
+            label: 'Location',
+            value: location,
+            icon: Assets.icons.location.svg(),
+          ),
+          _DetailRow(
+            label: 'Phone number',
+            value: phoneNumber,
+            icon: Assets.icons.phone.svg(),
+          ),
+          _DetailRow(
+            label: 'Telephone',
+            value: telephone,
+            icon: Assets.icons.telephone.svg(),
+          ),
+          _DetailRow(
+            label: 'Doctor Fee',
+            value: fee,
+            icon: Assets.icons.money.svg(),
+          ),
+          VerticalSpace(16),
+          _CancelReason(status: status, cancelReason: cancelReason),
+        ],
+      ),
+    );
+  }
+}
+
+class _CancelReason extends StatelessWidget {
+  const _CancelReason({required this.status, required this.cancelReason});
+
+  final AppointmentStatus status;
+  final String? cancelReason;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (status == AppointmentStatus.canceled) ...[
+          VerticalSpace(12),
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: Text('Canceled Reason', style: TextStyles.primaryText40014),
+          ),
+          VerticalSpace(8),
+          Text(
+            cancelReason ?? 'Contact doctor for more information',
+            style: TextStyles.secondaryText40014,
+          ),
+          VerticalSpace(32),
+        ],
+      ],
+    );
+  }
+}
+
+class _StatusRow extends StatelessWidget {
+  const _StatusRow({required this.status});
+
+  final AppointmentStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    final (statusBg, statusTextColor) = ColorHelper.statusColors(status);
+    return Row(
+      children: [
+        Expanded(child: Text('Details', style: TextStyles.primaryText40014)),
+        ChipWidget(
+          text: status.label,
+          backgroundColor: statusBg,
+          textStyle: TextStyle(
+            color: statusTextColor,
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DoctorSpecialization extends StatelessWidget {
+  const _DoctorSpecialization({required this.specialization});
+
+  final String specialization;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(specialization, style: TextStyles.secondaryText40012);
+  }
+}
+
+class _DoctorName extends StatelessWidget {
+  const _DoctorName({required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(name, style: TextStyles.primaryText70016);
+  }
+}
+
+class _AppointmentDate extends StatelessWidget {
+  const _AppointmentDate({required this.date, required this.time});
+
+  final DateTime date;
+  final String time;
+
+  @override
+  Widget build(BuildContext context) {
+    final formattedDate = AppFormatter.formatDate(date);
+    return Wrap(
+      spacing: 4,
+      children: [
+        ChipWidget(
+          text: formattedDate,
+          backgroundColor: AppColors.chipGrey,
+          textStyle: TextStyles.lightGrey70016,
+        ),
+        ChipWidget(
+          text: time,
+          backgroundColor: AppColors.chipGrey,
+          textStyle: TextStyles.lightGrey70016,
+        ),
+      ],
+    );
+  }
+}
+
+class _DoctorImage extends StatelessWidget {
+  const _DoctorImage({required this.image});
+
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    final avatarBackground = ColorHelper.avatarColor(image);
+    return Container(
+      decoration: BoxDecoration(
+        color: avatarBackground,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: Image.asset(image, fit: BoxFit.cover),
+      ),
     );
   }
 }
@@ -199,43 +253,41 @@ class _DetailRow extends StatelessWidget {
   const _DetailRow({
     required this.label,
     required this.value,
-    this.trailing,
-    this.onTap,
+    required this.icon,
   });
-
   final String label;
   final String value;
-  final Widget? trailing;
-  final VoidCallback? onTap;
+  final SvgPicture icon;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 110,
-              child: Text(label, style: TextStyles.secondaryText40014),
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Text(label, style: TextStyles.secondaryText40014),
+          ),
+          Expanded(
+            flex: 2,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    value,
+                    style: TextStyles.grey2Text40014,
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+                HorizontalSpace(8),
+                icon,
+              ],
             ),
-            Expanded(
-              child: Text(
-                value,
-                style: TextStyles.secondaryText40014,
-                textAlign: TextAlign.left,
-              ),
-            ),
-            if (tailingGapNeeded(trailing)) const SizedBox(width: 8),
-            if (trailing != null) trailing!,
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
-
-  bool tailingGapNeeded(Widget? t) => t != null;
 }

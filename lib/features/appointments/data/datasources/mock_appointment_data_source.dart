@@ -78,6 +78,7 @@ final Map<DateTime, List<AppointmentEntity>> mockEvents = {
       phoneNumber: _randomMobile(),
       telephone: _randomTelephone(),
       fee: _randomFee(),
+      cancelReason: _defaultReason,
     ),
   ],
 
@@ -93,6 +94,7 @@ final Map<DateTime, List<AppointmentEntity>> mockEvents = {
       phoneNumber: _randomMobile(),
       telephone: _randomTelephone(),
       fee: _randomFee(),
+      cancelReason: _defaultReason,
     ),
     AppointmentEntity(
       date: DateTime(2025, 8, 4),
@@ -105,6 +107,7 @@ final Map<DateTime, List<AppointmentEntity>> mockEvents = {
       phoneNumber: _randomMobile(),
       telephone: _randomTelephone(),
       fee: _randomFee(),
+      cancelReason: _defaultReason,
     ),
     AppointmentEntity(
       date: DateTime(2025, 8, 4),
@@ -117,6 +120,7 @@ final Map<DateTime, List<AppointmentEntity>> mockEvents = {
       phoneNumber: _randomMobile(),
       telephone: _randomTelephone(),
       fee: _randomFee(),
+      cancelReason: _defaultReason,
     ),
   ],
 
@@ -133,7 +137,7 @@ final Map<DateTime, List<AppointmentEntity>> mockEvents = {
       phoneNumber: _randomMobile(),
       telephone: _randomTelephone(),
       fee: _randomFee(),
-      cancelReason: (i % 7 == 0) ? _defaultReason : null,
+      cancelReason: _defaultReason,
     ),
   ),
 };

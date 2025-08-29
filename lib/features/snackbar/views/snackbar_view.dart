@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/features/snackbar/bloc/snackbar_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SnackbarView extends StatelessWidget {
   const SnackbarView({super.key, required this.child});
@@ -56,7 +56,7 @@ class _Snackbars extends StatelessWidget {
       ],
       child: snackbarItems.isNotEmpty
           ? Align(
-              alignment: Alignment.bottomRight,
+              alignment: AlignmentDirectional.bottomEnd,
               child: AnimatedList(
                 key: _listKey,
                 physics: const NeverScrollableScrollPhysics(),

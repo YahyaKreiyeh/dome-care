@@ -7,10 +7,10 @@ class AppointmentEntity {
   final String name;
   final String specialization;
   final AppointmentStatus status;
-  final String? location;
-  final String? phoneNumber;
-  final String? telephone;
-  final String? fee;
+  final String location;
+  final String phoneNumber;
+  final String telephone;
+  final String fee;
   final String? cancelReason;
 
   AppointmentEntity({
@@ -20,10 +20,10 @@ class AppointmentEntity {
     required this.name,
     required this.specialization,
     required this.status,
-    this.location,
-    this.phoneNumber,
-    this.telephone,
-    this.fee,
+    required this.location,
+    required this.phoneNumber,
+    required this.telephone,
+    required this.fee,
     this.cancelReason,
   });
 }
