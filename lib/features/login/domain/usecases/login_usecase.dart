@@ -9,15 +9,15 @@ class LoginUseCase implements UseCase<UserEntity, LoginParams> {
 
   @override
   Future<Result<UserEntity>> call(LoginParams params) {
-    final clean = params.phoneNumber.trim();
+    final username = params.userName.trim();
     return _repo.login(
-      params: LoginParams(phoneNumber: clean, password: params.password),
+      params: LoginParams(userName: username, password: params.password),
     );
   }
 }
 
 class LoginParams {
-  final String phoneNumber;
+  final String userName;
   final String password;
-  const LoginParams({required this.phoneNumber, required this.password});
+  const LoginParams({required this.userName, required this.password});
 }

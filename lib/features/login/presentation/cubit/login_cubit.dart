@@ -13,7 +13,7 @@ class LoginCubit extends Cubit<LoginState> with SafeEmitter<LoginState> {
   Future<void> login() async {
     safeEmit(state.copyWith(status: const Result.loading()));
     final result = await _loginUseCase(
-      LoginParams(phoneNumber: state.phone, password: state.password),
+      LoginParams(userName: state.username, password: state.password),
     );
     safeEmit(state.copyWith(status: result));
   }
@@ -24,6 +24,12 @@ class LoginCubit extends Cubit<LoginState> with SafeEmitter<LoginState> {
         ? null
         : 'Enter a valid number';
     safeEmit(state.copyWith(phone: digits, phoneError: error));
+  }
+
+  void usernameChanged(String val) {
+    final trimmed = val.trim();
+    final error = trimmed.isEmpty ? 'Username is required' : null;
+    safeEmit(state.copyWith(username: val, usernameError: error));
   }
 
   void passwordChanged(String val) {

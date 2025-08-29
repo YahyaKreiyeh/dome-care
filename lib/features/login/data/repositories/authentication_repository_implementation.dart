@@ -18,7 +18,7 @@ class AuthenticationRepositoryImplementation
   Future<Result<UserEntity>> login({required LoginParams params}) async {
     try {
       final LoginResponseDto dto = await _remote.login(
-        username: params.phoneNumber,
+        username: params.userName,
         password: params.password,
       );
       final entity = dto.toDomain();

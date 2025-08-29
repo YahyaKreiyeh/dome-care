@@ -21,11 +21,5 @@ String? passwordValidationError(String value) {
   if (v.isEmpty) return 'Password is required';
   if (v.contains(' ')) return 'No spaces allowed';
   if (v.length < 8) return 'At least 8 characters';
-  final hasUpper = RegExp(r'[A-Z]').hasMatch(v);
-  final hasLower = RegExp(r'[a-z]').hasMatch(v);
-  final hasDigit = RegExp(r'\d').hasMatch(v);
-  if (!(hasUpper && hasLower && hasDigit)) {
-    return 'Use upper, lower & a number';
-  }
   return null;
 }

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LoginState {
 
- Result get status; String get phone; String? get phoneError; String get password; String? get passwordError; bool get isPasswordObscured;
+ Result get status; String get phone; String? get phoneError; String get username; String? get usernameError; String get password; String? get passwordError; bool get isPasswordObscured;
 /// Create a copy of LoginState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $LoginStateCopyWith<LoginState> get copyWith => _$LoginStateCopyWithImpl<LoginSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginState&&(identical(other.status, status) || other.status == status)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.phoneError, phoneError) || other.phoneError == phoneError)&&(identical(other.password, password) || other.password == password)&&(identical(other.passwordError, passwordError) || other.passwordError == passwordError)&&(identical(other.isPasswordObscured, isPasswordObscured) || other.isPasswordObscured == isPasswordObscured));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginState&&(identical(other.status, status) || other.status == status)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.phoneError, phoneError) || other.phoneError == phoneError)&&(identical(other.username, username) || other.username == username)&&(identical(other.usernameError, usernameError) || other.usernameError == usernameError)&&(identical(other.password, password) || other.password == password)&&(identical(other.passwordError, passwordError) || other.passwordError == passwordError)&&(identical(other.isPasswordObscured, isPasswordObscured) || other.isPasswordObscured == isPasswordObscured));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,phone,phoneError,password,passwordError,isPasswordObscured);
+int get hashCode => Object.hash(runtimeType,status,phone,phoneError,username,usernameError,password,passwordError,isPasswordObscured);
 
 @override
 String toString() {
-  return 'LoginState(status: $status, phone: $phone, phoneError: $phoneError, password: $password, passwordError: $passwordError, isPasswordObscured: $isPasswordObscured)';
+  return 'LoginState(status: $status, phone: $phone, phoneError: $phoneError, username: $username, usernameError: $usernameError, password: $password, passwordError: $passwordError, isPasswordObscured: $isPasswordObscured)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $LoginStateCopyWith<$Res>  {
   factory $LoginStateCopyWith(LoginState value, $Res Function(LoginState) _then) = _$LoginStateCopyWithImpl;
 @useResult
 $Res call({
- Result status, String phone, String? phoneError, String password, String? passwordError, bool isPasswordObscured
+ Result status, String phone, String? phoneError, String username, String? usernameError, String password, String? passwordError, bool isPasswordObscured
 });
 
 
@@ -62,11 +62,13 @@ class _$LoginStateCopyWithImpl<$Res>
 
 /// Create a copy of LoginState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? phone = null,Object? phoneError = freezed,Object? password = null,Object? passwordError = freezed,Object? isPasswordObscured = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? phone = null,Object? phoneError = freezed,Object? username = null,Object? usernameError = freezed,Object? password = null,Object? passwordError = freezed,Object? isPasswordObscured = null,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as Result,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String,phoneError: freezed == phoneError ? _self.phoneError : phoneError // ignore: cast_nullable_to_non_nullable
+as String?,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String,usernameError: freezed == usernameError ? _self.usernameError : usernameError // ignore: cast_nullable_to_non_nullable
 as String?,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,passwordError: freezed == passwordError ? _self.passwordError : passwordError // ignore: cast_nullable_to_non_nullable
 as String?,isPasswordObscured: null == isPasswordObscured ? _self.isPasswordObscured : isPasswordObscured // ignore: cast_nullable_to_non_nullable
@@ -164,10 +166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Result status,  String phone,  String? phoneError,  String password,  String? passwordError,  bool isPasswordObscured)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Result status,  String phone,  String? phoneError,  String username,  String? usernameError,  String password,  String? passwordError,  bool isPasswordObscured)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LoginState() when $default != null:
-return $default(_that.status,_that.phone,_that.phoneError,_that.password,_that.passwordError,_that.isPasswordObscured);case _:
+return $default(_that.status,_that.phone,_that.phoneError,_that.username,_that.usernameError,_that.password,_that.passwordError,_that.isPasswordObscured);case _:
   return orElse();
 
 }
@@ -185,10 +187,10 @@ return $default(_that.status,_that.phone,_that.phoneError,_that.password,_that.p
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Result status,  String phone,  String? phoneError,  String password,  String? passwordError,  bool isPasswordObscured)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Result status,  String phone,  String? phoneError,  String username,  String? usernameError,  String password,  String? passwordError,  bool isPasswordObscured)  $default,) {final _that = this;
 switch (_that) {
 case _LoginState():
-return $default(_that.status,_that.phone,_that.phoneError,_that.password,_that.passwordError,_that.isPasswordObscured);case _:
+return $default(_that.status,_that.phone,_that.phoneError,_that.username,_that.usernameError,_that.password,_that.passwordError,_that.isPasswordObscured);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +207,10 @@ return $default(_that.status,_that.phone,_that.phoneError,_that.password,_that.p
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Result status,  String phone,  String? phoneError,  String password,  String? passwordError,  bool isPasswordObscured)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Result status,  String phone,  String? phoneError,  String username,  String? usernameError,  String password,  String? passwordError,  bool isPasswordObscured)?  $default,) {final _that = this;
 switch (_that) {
 case _LoginState() when $default != null:
-return $default(_that.status,_that.phone,_that.phoneError,_that.password,_that.passwordError,_that.isPasswordObscured);case _:
+return $default(_that.status,_that.phone,_that.phoneError,_that.username,_that.usernameError,_that.password,_that.passwordError,_that.isPasswordObscured);case _:
   return null;
 
 }
@@ -220,12 +222,14 @@ return $default(_that.status,_that.phone,_that.phoneError,_that.password,_that.p
 
 
 class _LoginState implements LoginState {
-  const _LoginState({this.status = const Result.empty(), this.phone = '', this.phoneError, this.password = '', this.passwordError, this.isPasswordObscured = true});
+  const _LoginState({this.status = const Result.empty(), this.phone = '', this.phoneError, this.username = '', this.usernameError, this.password = '', this.passwordError, this.isPasswordObscured = true});
   
 
 @override@JsonKey() final  Result status;
 @override@JsonKey() final  String phone;
 @override final  String? phoneError;
+@override@JsonKey() final  String username;
+@override final  String? usernameError;
 @override@JsonKey() final  String password;
 @override final  String? passwordError;
 @override@JsonKey() final  bool isPasswordObscured;
@@ -240,16 +244,16 @@ _$LoginStateCopyWith<_LoginState> get copyWith => __$LoginStateCopyWithImpl<_Log
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginState&&(identical(other.status, status) || other.status == status)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.phoneError, phoneError) || other.phoneError == phoneError)&&(identical(other.password, password) || other.password == password)&&(identical(other.passwordError, passwordError) || other.passwordError == passwordError)&&(identical(other.isPasswordObscured, isPasswordObscured) || other.isPasswordObscured == isPasswordObscured));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginState&&(identical(other.status, status) || other.status == status)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.phoneError, phoneError) || other.phoneError == phoneError)&&(identical(other.username, username) || other.username == username)&&(identical(other.usernameError, usernameError) || other.usernameError == usernameError)&&(identical(other.password, password) || other.password == password)&&(identical(other.passwordError, passwordError) || other.passwordError == passwordError)&&(identical(other.isPasswordObscured, isPasswordObscured) || other.isPasswordObscured == isPasswordObscured));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,phone,phoneError,password,passwordError,isPasswordObscured);
+int get hashCode => Object.hash(runtimeType,status,phone,phoneError,username,usernameError,password,passwordError,isPasswordObscured);
 
 @override
 String toString() {
-  return 'LoginState(status: $status, phone: $phone, phoneError: $phoneError, password: $password, passwordError: $passwordError, isPasswordObscured: $isPasswordObscured)';
+  return 'LoginState(status: $status, phone: $phone, phoneError: $phoneError, username: $username, usernameError: $usernameError, password: $password, passwordError: $passwordError, isPasswordObscured: $isPasswordObscured)';
 }
 
 
@@ -260,7 +264,7 @@ abstract mixin class _$LoginStateCopyWith<$Res> implements $LoginStateCopyWith<$
   factory _$LoginStateCopyWith(_LoginState value, $Res Function(_LoginState) _then) = __$LoginStateCopyWithImpl;
 @override @useResult
 $Res call({
- Result status, String phone, String? phoneError, String password, String? passwordError, bool isPasswordObscured
+ Result status, String phone, String? phoneError, String username, String? usernameError, String password, String? passwordError, bool isPasswordObscured
 });
 
 
@@ -277,11 +281,13 @@ class __$LoginStateCopyWithImpl<$Res>
 
 /// Create a copy of LoginState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? phone = null,Object? phoneError = freezed,Object? password = null,Object? passwordError = freezed,Object? isPasswordObscured = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? phone = null,Object? phoneError = freezed,Object? username = null,Object? usernameError = freezed,Object? password = null,Object? passwordError = freezed,Object? isPasswordObscured = null,}) {
   return _then(_LoginState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as Result,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String,phoneError: freezed == phoneError ? _self.phoneError : phoneError // ignore: cast_nullable_to_non_nullable
+as String?,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String,usernameError: freezed == usernameError ? _self.usernameError : usernameError // ignore: cast_nullable_to_non_nullable
 as String?,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,passwordError: freezed == passwordError ? _self.passwordError : passwordError // ignore: cast_nullable_to_non_nullable
 as String?,isPasswordObscured: null == isPasswordObscured ? _self.isPasswordObscured : isPasswordObscured // ignore: cast_nullable_to_non_nullable

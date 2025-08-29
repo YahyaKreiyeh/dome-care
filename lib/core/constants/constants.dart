@@ -7,7 +7,6 @@ const domeCare = 'Dome Care';
 const longTextTest =
     'This is a long text This is a long text This is a long text This is a long text This is a long text';
 const shortTextTest = 'a';
-bool isLoggedInUser = false;
 
 class SharedPrefKeys {
   SharedPrefKeys._();

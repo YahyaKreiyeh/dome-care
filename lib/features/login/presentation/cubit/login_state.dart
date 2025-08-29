@@ -9,6 +9,8 @@ abstract class LoginState with _$LoginState {
     @Default(Result.empty()) Result status,
     @Default('') String phone,
     String? phoneError,
+    @Default('') String username,
+    String? usernameError,
     @Default('') String password,
     String? passwordError,
     @Default(true) bool isPasswordObscured,

@@ -20,12 +20,8 @@ class AuthenticationRemoteDataSourceImpl
     required String password,
   }) async {
     try {
-      // HACK: Remove hardcoded credentials once backend is ready
-      // return await _service.login(
-      //   LoginRequestDto(username: username, password: password),
-      // );
       return await _service.login(
-        LoginRequestDto(username: 'emilys', password: 'emilyspass'),
+        LoginRequestDto(username: username, password: password),
       );
     } on DioException {
       rethrow;

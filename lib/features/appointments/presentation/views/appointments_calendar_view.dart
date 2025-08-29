@@ -2,6 +2,7 @@ import 'package:dome_care/core/constants/constants.dart';
 import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/core/helpers/color_helper.dart';
 import 'package:dome_care/core/helpers/formatters.dart';
+import 'package:dome_care/core/helpers/shared_pref_helper.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
 import 'package:dome_care/core/routing/routes.dart';
 import 'package:dome_care/core/routing/routes_extension.dart';
@@ -43,7 +44,20 @@ class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
         : _getEventsForDay(_selectedDay!);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My Appointments')),
+      appBar: AppBar(
+        title: const Text('My Appointments'),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await SharedPrefHelper.deleteSecured(SharedPrefKeys.userToken);
+              if (context.mounted) {
+                context.pushReplacementNamed(Routes.login);
+              }
+            },
+            icon: const Icon(Icons.logout, color: AppColors.grey),
+          ),
+        ],
+      ),
       body: SafeArea(
         bottom: false,
         child: Stack(
