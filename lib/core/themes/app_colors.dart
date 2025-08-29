@@ -5,7 +5,7 @@ class AppColors {
   static const primary = Color(0xFF3B86FF);
   static const primaryLight = Color(0xFFF4F8FF);
   static const secondary = Color(0xFFFFEED7);
-  static const lightOrange = Color(0xFFFDEDDB);
+
   static const lighterOrange = Color(0xFFFFFBF7);
   static const navyBlue = Color(0xFF2B3E5B);
   static const semiGray = Color(0xFFE4E2E0);
@@ -16,6 +16,10 @@ class AppColors {
   static const blue = Color(0xFF1575E5);
   static const green = Color(0xFF01E17B);
   static const lightGreen = Color(0xFFD5FFEC);
+  static const orange = Color(0xFFFFB000);
+  static const lightOrange = Color(0xFFFFF4DD);
+  static const red = Color(0xFFFF2C2C);
+  static const lightRed = Color(0xFFFFE5E5);
   static const yellow = Color(0xFFFFD43A);
   static const black = Color(0xFF000000);
   static const white = Color(0xFFFFFFFF);

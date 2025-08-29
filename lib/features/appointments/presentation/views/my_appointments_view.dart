@@ -1,9 +1,12 @@
+import 'package:dome_care/core/constants/constants.dart';
+import 'package:dome_care/core/helpers/color_helper.dart';
+import 'package:dome_care/core/helpers/formatters.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:dome_care/features/appointments/data/datasources/mock_appointment_data_source.dart';
+import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class MyAppointmentsView extends StatefulWidget {
@@ -17,14 +20,26 @@ class _MyAppointmentsViewState extends State<MyAppointmentsView> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
+  @override
+  void initState() {
+    super.initState();
+    final now = DateTime.now();
+    _selectedDay = DateTime(now.year, now.month, now.day);
+  }
+
   List<dynamic> _getEventsForDay(DateTime day) =>
       mockEvents[DateTime(day.year, day.month, day.day)] ?? const [];
 
   @override
   Widget build(BuildContext context) {
+    final list = _selectedDay == null
+        ? const []
+        : _getEventsForDay(_selectedDay!);
+
     return Scaffold(
       appBar: AppBar(title: const Text('My Appointments')),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           VerticalSpace(3),
           _AppointmentsCalendar(
@@ -33,25 +48,46 @@ class _MyAppointmentsViewState extends State<MyAppointmentsView> {
             eventLoader: _getEventsForDay,
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
-                _selectedDay = selectedDay;
+                _selectedDay = DateTime(
+                  selectedDay.year,
+                  selectedDay.month,
+                  selectedDay.day,
+                );
                 _focusedDay = focusedDay;
               });
             },
           ),
-          VerticalSpace(24),
-          if (_selectedDay != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Appointments on ${_selectedDay!.toLocal().toString().split(' ').first}',
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-              ),
-            ),
+          _AppointmentsList(list: list),
         ],
       ),
+    );
+  }
+}
+
+class _AppointmentsList extends StatelessWidget {
+  const _AppointmentsList({required this.list});
+
+  final List list;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: list.isEmpty
+          ? const _EmptyState()
+          : ColoredBox(
+              color: AppColors.white,
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: 24,
+                ),
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  final appointment = list[index];
+                  return _AppointmentTile(appointment: appointment);
+                },
+              ),
+            ),
     );
   }
 }
@@ -93,7 +129,7 @@ class _AppointmentsCalendar extends StatelessWidget {
         ),
         daysOfWeekStyle: DaysOfWeekStyle(
           dowTextFormatter: (date, locale) =>
-              DateFormat('EEE', locale).format(date).toUpperCase(),
+              AppFormatter.formatWeekday(date, locale: locale),
           weekendStyle: TextStyles.secondaryText40012,
           weekdayStyle: TextStyles.secondaryText40012,
         ),
@@ -149,11 +185,9 @@ class _AppointmentsCalendar extends StatelessWidget {
           },
           markerBuilder: (context, day, events) {
             if (events.isEmpty) return const SizedBox.shrink();
-
             final isSelected = isSameDay(selectedDay, day);
             final dotColor = isSelected ? AppColors.white : AppColors.green;
             final count = events.length.clamp(0, 3);
-
             return Padding(
               padding: const EdgeInsets.only(bottom: 5),
               child: Row(
@@ -202,6 +236,99 @@ class _EventDay extends StatelessWidget {
           fontWeight: FontWeight.w700,
           fontSize: 14,
         ),
+      ),
+    );
+  }
+}
+
+class _AppointmentTile extends StatelessWidget {
+  const _AppointmentTile({required this.appointment});
+
+  final AppointmentEntity appointment;
+
+  @override
+  Widget build(BuildContext context) {
+    final date = AppFormatter.formatDate(appointment.date);
+    final (backgroundColor, textColor) = ColorHelper.statusColors(
+      appointment.status,
+    );
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 32,
+            backgroundImage: AssetImage(appointment.image),
+            backgroundColor: AppColors.primaryLight,
+          ),
+          HorizontalSpace(8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Wrap(
+                        spacing: 4,
+                        runSpacing: 4,
+                        children: [
+                          _Chip(text: date),
+                          _Chip(text: appointment.time),
+                        ],
+                      ),
+                    ),
+                    _Chip(
+                      text: appointment.status,
+                      backgroundColor: backgroundColor,
+                      textStyle: TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+                Text(appointment.name, style: TextStyles.primaryText70014),
+                Text(
+                  appointment.specialization,
+                  style: TextStyles.secondaryText40012,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Chip extends StatelessWidget {
+  const _Chip({required this.text, this.backgroundColor, this.textStyle});
+  final String text;
+  final Color? backgroundColor;
+  final TextStyle? textStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      backgroundColor: backgroundColor ?? AppColors.primaryLight,
+      label: Text(text, style: textStyle ?? TextStyles.primary70013),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'No appointments for this date.',
+        style: TextStyles.secondaryText40012,
       ),
     );
   }

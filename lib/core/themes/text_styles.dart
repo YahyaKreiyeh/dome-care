@@ -302,8 +302,20 @@ class TextStyles {
     color: AppColors.primaryText,
   );
 
-  static TextStyle appPrimaryText70016 = const TextStyle(
+  static TextStyle primaryText70014 = const TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    color: AppColors.primaryText,
+  );
+
+  static TextStyle primary70016 = const TextStyle(
     fontSize: 16,
+    fontWeight: FontWeight.w700,
+    color: AppColors.appPrimaryText,
+  );
+
+  static TextStyle primary70013 = const TextStyle(
+    fontSize: 13,
     fontWeight: FontWeight.w700,
     color: AppColors.appPrimaryText,
   );

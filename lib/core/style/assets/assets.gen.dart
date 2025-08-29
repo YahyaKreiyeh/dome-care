@@ -22,6 +22,18 @@ class $AssetsImagesGen {
   AssetGenImage get appIcon =>
       const AssetGenImage('assets/images/app_icon.png');
 
+  /// File path: assets/images/avatar_1.png
+  AssetGenImage get avatar1 =>
+      const AssetGenImage('assets/images/avatar_1.png');
+
+  /// File path: assets/images/avatar_2.png
+  AssetGenImage get avatar2 =>
+      const AssetGenImage('assets/images/avatar_2.png');
+
+  /// File path: assets/images/avatar_3.png
+  AssetGenImage get avatar3 =>
+      const AssetGenImage('assets/images/avatar_3.png');
+
   /// File path: assets/images/login_header.png
   AssetGenImage get loginHeader =>
       const AssetGenImage('assets/images/login_header.png');
@@ -45,6 +57,9 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [
     android12Splash,
     appIcon,
+    avatar1,
+    avatar2,
+    avatar3,
     loginHeader,
     onboarding1,
     onboarding2,

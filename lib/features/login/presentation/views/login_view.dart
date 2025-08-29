@@ -58,7 +58,7 @@ class _CreateAccount extends StatelessWidget {
               ),
               TextSpan(
                 text: 'Create Account',
-                style: TextStyles.appPrimaryText70016.copyWith(
+                style: TextStyles.primary70016.copyWith(
                   decoration: TextDecoration.underline,
                   decorationColor: AppColors.appPrimaryText,
                 ),
