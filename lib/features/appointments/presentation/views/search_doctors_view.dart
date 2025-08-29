@@ -18,21 +18,21 @@ class SearchDoctorsView extends StatefulWidget {
 
 class _SearchDoctorsViewState extends State<SearchDoctorsView> {
   final _controller = TextEditingController();
-  String _q = '';
+  String _searchTerm = '';
 
-  late final List<DoctorEntity> _items = mockDoctors;
+  late final List<DoctorEntity> _doctors = mockDoctors;
 
   @override
   Widget build(BuildContext context) {
-    final query = _q.trim().toLowerCase();
-    final filtered = query.isEmpty
-        ? _items
-        : _items
+    final query = _searchTerm.trim().toLowerCase();
+    final filteredDoctors = query.isEmpty
+        ? _doctors
+        : _doctors
               .where(
-                (d) =>
-                    d.name.toLowerCase().contains(query) ||
-                    d.specialization.toLowerCase().contains(query) ||
-                    d.location.toLowerCase().contains(query),
+                (doctor) =>
+                    doctor.name.toLowerCase().contains(query) ||
+                    doctor.specialization.toLowerCase().contains(query) ||
+                    doctor.location.toLowerCase().contains(query),
               )
               .toList();
 
@@ -50,6 +50,11 @@ class _SearchDoctorsViewState extends State<SearchDoctorsView> {
             child: CustomTextField(
               controller: _controller,
               hintText: 'Search for doctors',
+              onChanged: (v) => setState(() => _searchTerm = v),
+              textStyle: TextStyles.primaryText40015,
+              filled: true,
+              showBorder: false,
+              fillColor: AppColors.inputFillGrey,
               prefixIcon: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Assets.icons.search.svg(
@@ -63,48 +68,37 @@ class _SearchDoctorsViewState extends State<SearchDoctorsView> {
                 width: 43,
                 height: 43,
               ),
-
-              suffixIcon: (_q.isEmpty)
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Assets.icons.close.svg(
-                        colorFilter: const ColorFilter.mode(
-                          AppColors.secondaryText,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Assets.icons.close.svg(
-                        colorFilter: const ColorFilter.mode(
-                          AppColors.secondaryText,
-                          BlendMode.srcIn,
-                        ),
-                      ),
+              suffixIcon: InkWell(
+                onTap: () {
+                  if (_searchTerm.isNotEmpty) {
+                    _controller.clear();
+                    setState(() => _searchTerm = '');
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Assets.icons.close.svg(
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.secondaryText,
+                      BlendMode.srcIn,
                     ),
+                  ),
+                ),
+              ),
               suffixIconConstraints: const BoxConstraints.tightFor(
                 width: 43,
                 height: 43,
               ),
-              onChanged: (v) => setState(() => _q = v),
-              filled: true,
-              showBorder: false,
-              fillColor: AppColors.inputFillGrey,
-              textStyle: TextStyles.primaryText40015,
             ),
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 4.0),
-        child: ColoredBox(
-          color: AppColors.whiteScaffoldBackground,
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            itemCount: filtered.length,
-            itemBuilder: (context, i) => _DoctorTile(doctor: filtered[i]),
-          ),
+      body: ColoredBox(
+        color: AppColors.whiteScaffoldBackground,
+        child: ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          itemCount: filteredDoctors.length,
+          itemBuilder: (context, i) => _DoctorTile(doctor: filteredDoctors[i]),
         ),
       ),
     );
@@ -113,6 +107,7 @@ class _SearchDoctorsViewState extends State<SearchDoctorsView> {
 
 class _DoctorTile extends StatelessWidget {
   const _DoctorTile({required this.doctor});
+
   final DoctorEntity doctor;
 
   @override
