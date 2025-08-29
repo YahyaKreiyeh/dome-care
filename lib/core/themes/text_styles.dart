@@ -38,8 +38,20 @@ class TextStyles {
     color: AppColors.secondaryText,
   );
 
+  static TextStyle secondaryText40012 = const TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: AppColors.secondaryText,
+  );
+
   static TextStyle primaryText40013 = const TextStyle(
     fontSize: 13,
+    fontWeight: FontWeight.w400,
+    color: AppColors.primaryText,
+  );
+
+  static TextStyle primaryText40014 = const TextStyle(
+    fontSize: 14,
     fontWeight: FontWeight.w400,
     color: AppColors.primaryText,
   );
@@ -101,6 +113,12 @@ class TextStyles {
 
   static TextStyle white70016 = const TextStyle(
     fontSize: 16,
+    fontWeight: FontWeight.w700,
+    color: AppColors.whiteText,
+  );
+
+  static TextStyle white70014 = const TextStyle(
+    fontSize: 14,
     fontWeight: FontWeight.w700,
     color: AppColors.whiteText,
   );
@@ -180,6 +198,11 @@ class TextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.appPrimaryText,
   );
+  static TextStyle primary40014 = const TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.appPrimaryText,
+  );
 
   static TextStyle primary40015 = const TextStyle(
     fontSize: 15,
@@ -252,6 +275,18 @@ class TextStyles {
   static TextStyle primaryText70022 = const TextStyle(
     fontSize: 22,
     fontWeight: FontWeight.w700,
+    color: AppColors.primaryText,
+  );
+
+  static TextStyle primaryText70016 = const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    color: AppColors.primaryText,
+  );
+
+  static TextStyle primaryText60016 = const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
     color: AppColors.primaryText,
   );
 

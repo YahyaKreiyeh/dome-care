@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
+import 'package:flutter/material.dart';
 
 ChipThemeData customChipTheme() => ChipThemeData(
   showCheckmark: false,
-  disabledColor: AppColors.scaffoldBackground,
+  disabledColor: AppColors.greyScaffoldBackground,
   backgroundColor: AppColors.white,
   selectedColor: AppColors.secondary,
   surfaceTintColor: AppColors.secondary,

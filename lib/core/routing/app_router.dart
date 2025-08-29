@@ -1,5 +1,6 @@
 import 'package:dome_care/core/di/dependency_injection.dart';
 import 'package:dome_care/core/routing/routes.dart';
+import 'package:dome_care/features/appointments/presentation/views/my_appointments_view.dart';
 import 'package:dome_care/features/login/presentation/cubit/login_cubit.dart';
 import 'package:dome_care/features/login/presentation/views/login_view.dart';
 import 'package:dome_care/onboarding_view.dart';
@@ -16,6 +17,8 @@ class AppRouter {
             child: const LoginView(),
           ),
         );
+      case Routes.myAppointments:
+        return MaterialPageRoute(builder: (_) => MyAppointmentsView());
       case Routes.onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingView());
       default:

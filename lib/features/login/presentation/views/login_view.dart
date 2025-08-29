@@ -23,6 +23,7 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.whiteScaffoldBackground,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -144,7 +145,7 @@ class _LoginBlocListener extends StatelessWidget {
                 type: SnackbarType.success,
               ),
             );
-            context.pushReplacementNamed(Routes.home);
+            context.pushReplacementNamed(Routes.myAppointments);
           },
           failure: (_, _, errorMessage) {
             context.read<SnackbarBloc>().add(

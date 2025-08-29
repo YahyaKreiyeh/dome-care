@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:dome_care/core/themes/app_bar_theme.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/bottom_sheet_theme.dart';
@@ -11,11 +10,12 @@ import 'package:dome_care/core/themes/input_decoration_theme.dart';
 import 'package:dome_care/core/themes/page_transitions_theme.dart';
 import 'package:dome_care/core/themes/popupmenu_theme.dart';
 import 'package:dome_care/core/themes/text_theme.dart';
+import 'package:flutter/material.dart';
 
 ThemeData getTheme() => ThemeData(
   canvasColor: AppColors.white,
   appBarTheme: appBarTheme(),
-  scaffoldBackgroundColor: AppColors.white,
+  scaffoldBackgroundColor: AppColors.greyScaffoldBackground,
   primaryColor: AppColors.primary,
   primaryColorLight: AppColors.primary.withAlpha((0.1 * 255).toInt()),
   colorScheme: colorScheme(),

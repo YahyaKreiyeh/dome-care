@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
   static const primary = Color(0xFF3B86FF);
+  static const primaryLight = Color(0xFFF4F8FF);
   static const secondary = Color(0xFFFFEED7);
   static const lightOrange = Color(0xFFFDEDDB);
   static const lighterOrange = Color(0xFFFFFBF7);
@@ -13,7 +14,8 @@ class AppColors {
   // Basics
   static const error = Color(0xFFEC0D28);
   static const blue = Color(0xFF1575E5);
-  static const green = Color(0xFF11C26D);
+  static const green = Color(0xFF01E17B);
+  static const lightGreen = Color(0xFFD5FFEC);
   static const yellow = Color(0xFFFFD43A);
   static const black = Color(0xFF000000);
   static const white = Color(0xFFFFFFFF);
@@ -36,7 +38,7 @@ class AppColors {
   // Text
   static const appPrimaryText = Color(0xFF3B86FF);
   static const primaryText = Color(0xFF172A47);
-  static const secondaryText = Color(0xFF6C6C6C);
+  static const secondaryText = Color(0xFF8F9BBA);
   static const whiteText = Color(0xFFFFFFFF);
   static const redText = Color(0xFFC42020);
   static const textfieldLabel = Color(0xFF808DA4);
@@ -46,7 +48,8 @@ class AppColors {
   static const bottomNavBarHighLight = Color(0x1FFFFFFF);
 
   // Scaffold
-  static const scaffoldBackground = Color(0xFFF3F5F8);
+  static const whiteScaffoldBackground = Color(0xFFFFFFFF);
+  static const greyScaffoldBackground = Color(0xFFF4F5FA);
 
   // AppBar
   static const appBarBackground = Color(0xFFF3F5F8);
