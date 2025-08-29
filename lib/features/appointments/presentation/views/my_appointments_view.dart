@@ -10,9 +10,9 @@ import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:dome_care/core/widgets/buttons/primary_button.dart';
 import 'package:dome_care/features/appointments/data/datasources/mock_appointment_data_source.dart';
 import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
-import 'package:dome_care/features/appointments/presentation/widget/chip_widget.dart';
+import 'package:dome_care/features/appointments/presentation/widget/app_calendar.dart';
+import 'package:dome_care/features/appointments/presentation/widget/app_chip.dart';
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class MyAppointmentsView extends StatefulWidget {
   const MyAppointmentsView({super.key});
@@ -51,9 +51,11 @@ class _MyAppointmentsViewState extends State<MyAppointmentsView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 VerticalSpace(3),
-                _AppointmentsCalendar(
+                AppCalendar(
                   focusedDay: _focusedDay,
                   selectedDay: _selectedDay,
+                  firstDay: DateTime.utc(2025, 1, 1),
+                  lastDay: DateTime.utc(2025, 12, 31),
                   eventLoader: _getEventsForDay,
                   onDaySelected: (selectedDay, focusedDay) {
                     setState(() {
@@ -105,10 +107,7 @@ class _AppointmentsList extends StatelessWidget {
           : ColoredBox(
               color: AppColors.white,
               child: ListView.builder(
-                padding: EdgeInsets.symmetric(
-                  horizontal: horizontalPadding,
-                  vertical: 24,
-                ),
+                padding: EdgeInsets.symmetric(vertical: 24),
                 itemCount: list.length,
                 itemBuilder: (context, index) {
                   final appointment = list[index];
@@ -116,155 +115,6 @@ class _AppointmentsList extends StatelessWidget {
                 },
               ),
             ),
-    );
-  }
-}
-
-class _AppointmentsCalendar extends StatelessWidget {
-  const _AppointmentsCalendar({
-    required this.focusedDay,
-    required this.selectedDay,
-    required this.onDaySelected,
-    required this.eventLoader,
-  });
-
-  final DateTime focusedDay;
-  final DateTime? selectedDay;
-  final void Function(DateTime selectedDay, DateTime focusedDay) onDaySelected;
-  final List<dynamic> Function(DateTime day) eventLoader;
-
-  @override
-  Widget build(BuildContext context) {
-    return ColoredBox(
-      color: AppColors.white,
-      child: TableCalendar(
-        firstDay: DateTime.utc(2025, 1, 1),
-        lastDay: DateTime.utc(2025, 12, 31),
-        focusedDay: focusedDay,
-        startingDayOfWeek: StartingDayOfWeek.sunday,
-        headerStyle: HeaderStyle(
-          formatButtonVisible: false,
-          titleCentered: true,
-          leftChevronIcon: Icon(
-            Icons.chevron_left,
-            color: AppColors.primaryText,
-          ),
-          rightChevronIcon: Icon(
-            Icons.chevron_right,
-            color: AppColors.primaryText,
-          ),
-          titleTextStyle: TextStyles.primaryText60016,
-        ),
-        daysOfWeekStyle: DaysOfWeekStyle(
-          dowTextFormatter: (date, locale) =>
-              AppFormatter.formatWeekday(date, locale: locale),
-          weekendStyle: TextStyles.secondaryText40012,
-          weekdayStyle: TextStyles.secondaryText40012,
-        ),
-        calendarStyle: CalendarStyle(
-          selectedDecoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.primary,
-          ),
-          selectedTextStyle: TextStyles.white70014,
-          todayDecoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: AppColors.primary),
-            color: AppColors.primaryLight,
-          ),
-          todayTextStyle: TextStyles.primary40014,
-          defaultTextStyle: TextStyles.primaryText40014,
-          weekendTextStyle: TextStyles.primaryText40014,
-          cellMargin: EdgeInsets.zero,
-          outsideDaysVisible: true,
-          outsideTextStyle: TextStyles.secondaryText40014,
-        ),
-        selectedDayPredicate: (day) => isSameDay(selectedDay, day),
-        onDaySelected: onDaySelected,
-        eventLoader: eventLoader,
-        calendarBuilders: CalendarBuilders(
-          selectedBuilder: (context, day, _) {
-            return Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primary,
-              ),
-              child: Text('${day.day}', style: TextStyles.white70014),
-            );
-          },
-          defaultBuilder: (context, day, _) {
-            final hasEvents = eventLoader(day).isNotEmpty;
-            if (!hasEvents) return null;
-            return _EventDay(
-              day: day,
-              textColor: AppColors.green,
-              background: AppColors.lightGreen,
-            );
-          },
-          outsideBuilder: (context, day, _) {
-            final hasEvents = eventLoader(day).isNotEmpty;
-            if (!hasEvents) return null;
-            return _EventDay(
-              day: day,
-              textColor: AppColors.green,
-              background: AppColors.lightGreen,
-            );
-          },
-          markerBuilder: (context, day, events) {
-            if (events.isEmpty) return const SizedBox.shrink();
-            final isSelected = isSameDay(selectedDay, day);
-            final dotColor = isSelected ? AppColors.white : AppColors.green;
-            final count = events.length.clamp(0, 3);
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  count,
-                  (_) => Container(
-                    width: 3,
-                    height: 3,
-                    margin: const EdgeInsets.symmetric(horizontal: 1),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: dotColor,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class _EventDay extends StatelessWidget {
-  const _EventDay({
-    required this.day,
-    required this.textColor,
-    required this.background,
-  });
-
-  final DateTime day;
-  final Color textColor;
-  final Color background;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(color: background, shape: BoxShape.circle),
-      child: Text(
-        '${day.day}',
-        style: TextStyle(
-          color: textColor,
-          fontWeight: FontWeight.w700,
-          fontSize: 14,
-        ),
-      ),
     );
   }
 }
@@ -292,60 +142,63 @@ class _AppointmentTile extends StatelessWidget {
             Routes.appointmentDetails,
             arguments: appointment,
           ),
-          child: Row(
-            children: [
-              CircleAvatar(
-                radius: avatarRadius,
-                backgroundColor: avatarBg,
-                backgroundImage: AssetImage(appointment.doctor.image),
-              ),
-              HorizontalSpace(8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 7,
-                          child: Wrap(
-                            spacing: 4,
-                            children: [
-                              ChipWidget(text: date),
-                              ChipWidget(text: appointment.time),
-                            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: avatarRadius,
+                  backgroundColor: avatarBg,
+                  backgroundImage: AssetImage(appointment.doctor.image),
+                ),
+                HorizontalSpace(8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 7,
+                            child: Wrap(
+                              spacing: 4,
+                              children: [
+                                AppChip(text: date),
+                                AppChip(text: appointment.time),
+                              ],
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Align(
-                            alignment: AlignmentDirectional.centerEnd,
-                            child: ChipWidget(
-                              text: appointment.status.label,
-                              backgroundColor: backgroundColor,
-                              textStyle: TextStyle(
-                                color: textColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,
+                          Expanded(
+                            flex: 3,
+                            child: Align(
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: AppChip(
+                                text: appointment.status.label,
+                                backgroundColor: backgroundColor,
+                                textStyle: TextStyle(
+                                  color: textColor,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      appointment.doctor.name,
-                      style: TextStyles.primaryText70014,
-                    ),
-                    Text(
-                      appointment.doctor.specialization,
-                      style: TextStyles.secondaryText40012,
-                    ),
-                  ],
+                        ],
+                      ),
+                      Text(
+                        appointment.doctor.name,
+                        style: TextStyles.primaryText70014,
+                      ),
+                      Text(
+                        appointment.doctor.specialization,
+                        style: TextStyles.secondaryText40012,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -1,7 +1,9 @@
 import 'package:dome_care/core/di/dependency_injection.dart';
 import 'package:dome_care/core/routing/routes.dart';
 import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
+import 'package:dome_care/features/appointments/domain/entites/doctor_entity.dart';
 import 'package:dome_care/features/appointments/presentation/views/appointment_details_view.dart';
+import 'package:dome_care/features/appointments/presentation/views/book_appointment_view.dart';
 import 'package:dome_care/features/appointments/presentation/views/my_appointments_view.dart';
 import 'package:dome_care/features/appointments/presentation/views/search_doctors_view.dart';
 import 'package:dome_care/features/login/presentation/cubit/login_cubit.dart';
@@ -25,6 +27,12 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => AppointmentDetailsView(appointment: appt),
         );
+      case Routes.bookAppointment:
+        final doctor = settings.arguments as DoctorEntity;
+        return MaterialPageRoute(
+          builder: (_) => BookAppointmentView(doctor: doctor),
+        );
+
       case Routes.searchDoctors:
         return MaterialPageRoute(builder: (_) => const SearchDoctorsView());
       case Routes.myAppointments:

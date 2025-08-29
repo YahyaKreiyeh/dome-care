@@ -33,6 +33,18 @@ class TextStyles {
     color: AppColors.secondaryText,
   );
 
+  static TextStyle chipText40016 = const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.chipText,
+  );
+
+  static TextStyle disabledChipText40016 = const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.disabledChipText,
+  );
+
   static TextStyle grey2Text40014 = const TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,

@@ -66,11 +66,13 @@ class AppColors {
   static const appBarBackground = Color(0xFFF3F5F8);
   static const appBarForeground = Color(0xFF141414);
 
-  // Choice Chips
-  static const choiceChipBackground = Color(0xFFFFEED7);
-
-  // Category Chips
-  static const categoryChipBackground = Color(0xFFF3F5F8);
+  // Chips
+  static const chipBackground = Color(0xFFFFFFFF);
+  static const disabledChipBackground = Color(0xFFF3F3F3);
+  static const chipText = Color(0xFF637381);
+  static const disabledChipText = Color(0xFFA7A7A7);
+  static const selectedChipBackground = Color(0xFFE2EDFF);
+  static const enabledChipShadow = Color(0x14163CFF);
 
   // Calendar
   static const outSideText = Color(0xffD9DADD);

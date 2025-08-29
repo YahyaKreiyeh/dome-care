@@ -7,7 +7,7 @@ import 'package:dome_care/core/style/assets/assets.gen.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
 import 'package:dome_care/features/appointments/domain/entites/appointment_entity.dart';
-import 'package:dome_care/features/appointments/presentation/widget/chip_widget.dart';
+import 'package:dome_care/features/appointments/presentation/widget/app_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -167,7 +167,7 @@ class _StatusRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(child: Text('Details', style: TextStyles.primaryText40014)),
-        ChipWidget(
+        AppChip(
           text: status.label,
           backgroundColor: statusBg,
           textStyle: TextStyle(
@@ -215,12 +215,12 @@ class _AppointmentDate extends StatelessWidget {
     return Wrap(
       spacing: 4,
       children: [
-        ChipWidget(
+        AppChip(
           text: formattedDate,
           backgroundColor: AppColors.chipGrey,
           textStyle: TextStyles.secondaryText70016,
         ),
-        ChipWidget(
+        AppChip(
           text: time,
           backgroundColor: AppColors.chipGrey,
           textStyle: TextStyles.secondaryText70016,

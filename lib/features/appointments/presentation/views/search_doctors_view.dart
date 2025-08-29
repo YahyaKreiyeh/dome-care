@@ -1,6 +1,8 @@
 import 'package:dome_care/core/constants/constants.dart';
 import 'package:dome_care/core/helpers/color_helper.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
+import 'package:dome_care/core/routing/routes.dart';
+import 'package:dome_care/core/routing/routes_extension.dart';
 import 'package:dome_care/core/style/assets/assets.gen.dart';
 import 'package:dome_care/core/themes/app_colors.dart';
 import 'package:dome_care/core/themes/text_styles.dart';
@@ -96,7 +98,7 @@ class _SearchDoctorsViewState extends State<SearchDoctorsView> {
       body: ColoredBox(
         color: AppColors.whiteScaffoldBackground,
         child: ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          padding: const EdgeInsets.symmetric(vertical: 4),
           itemCount: filteredDoctors.length,
           itemBuilder: (context, i) => _DoctorTile(doctor: filteredDoctors[i]),
         ),
@@ -113,50 +115,58 @@ class _DoctorTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bg = ColorHelper.avatarColor(doctor.image);
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: avatarRadius,
-            backgroundColor: bg,
-            backgroundImage: AssetImage(doctor.image),
-          ),
-          const HorizontalSpace(8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(doctor.name, style: TextStyles.primaryText70014),
-                const VerticalSpace(2),
-                Text(
-                  doctor.specialization,
-                  style: TextStyles.secondaryText40012,
-                ),
-                const VerticalSpace(8),
-                Row(
+    return Material(
+      child: InkWell(
+        splashColor: AppColors.primaryLight,
+        highlightColor: AppColors.primaryLight,
+        onTap: () =>
+            context.pushNamed(Routes.bookAppointment, arguments: doctor),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                radius: avatarRadius,
+                backgroundColor: bg,
+                backgroundImage: AssetImage(doctor.image),
+              ),
+              const HorizontalSpace(8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Assets.icons.location.svg(
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.grey2Text,
-                        BlendMode.srcIn,
-                      ),
+                    Text(doctor.name, style: TextStyles.primaryText70014),
+                    const VerticalSpace(2),
+                    Text(
+                      doctor.specialization,
+                      style: TextStyles.secondaryText40012,
                     ),
-                    const HorizontalSpace(6),
-                    Expanded(
-                      child: Text(
-                        doctor.location,
-                        style: TextStyles.grey2Text40012,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    const VerticalSpace(8),
+                    Row(
+                      children: [
+                        Assets.icons.location.svg(
+                          colorFilter: const ColorFilter.mode(
+                            AppColors.grey2Text,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                        const HorizontalSpace(6),
+                        Expanded(
+                          child: Text(
+                            doctor.location,
+                            style: TextStyles.grey2Text40012,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
