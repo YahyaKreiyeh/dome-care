@@ -3,7 +3,6 @@ import 'package:dome_care/core/constants/constants.dart';
 import 'package:dome_care/core/constants/enums.dart';
 import 'package:dome_care/core/helpers/color_helper.dart';
 import 'package:dome_care/core/helpers/formatters.dart';
-import 'package:dome_care/core/helpers/local_helper.dart';
 import 'package:dome_care/core/helpers/shared_pref_helper.dart';
 import 'package:dome_care/core/helpers/spacing.dart';
 import 'package:dome_care/core/localization/locale_keys.g.dart';
@@ -42,7 +41,8 @@ class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
     _selectedDay = DateTime(now.year, now.month, now.day);
   }
 
-  List<dynamic> _getEventsForDay(DateTime day) => LocalHelper.isArabic()
+  List<dynamic> _getEventsForDay(DateTime day) =>
+      context.locale.languageCode == 'ar'
       ? mockEventsAr[DateTime(day.year, day.month, day.day)] ?? const []
       : mockEvents[DateTime(day.year, day.month, day.day)] ?? const [];
 
@@ -56,81 +56,10 @@ class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
 
     final list = _selectedDay == null ? const [] : eventLoader(_selectedDay!);
 
-    final localeTag = context.locale.toLanguageTag();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(LocaleKeys.appointments_myAppointments.tr()),
-        actions: [
-          IconButton(
-            onPressed: () {
-              final currentLocale = context.locale;
-              if (currentLocale.languageCode == 'en') {
-                context.setLocale(const Locale('ar'));
-              } else {
-                context.setLocale(const Locale('en'));
-              }
-            },
-            icon: const Icon(Icons.language, color: AppColors.grey),
-          ),
-          // HACK: these buttons are for user session testing
-          IconButton(
-            onPressed: () async {
-              await SharedPrefHelper.deleteSecured(SharedPrefKeys.userToken);
-              await SharedPrefHelper.deleteSecured(SharedPrefKeys.refreshToken);
-              if (context.mounted) {
-                context.read<SnackbarBloc>().add(
-                  AddSnackbarEvent(
-                    message:
-                        'Cleared access + refresh. Now tap "Test Refresh".',
-                    type: SnackbarType.success,
-                  ),
-                );
-              }
-            },
-            icon: const Icon(Icons.delete_forever, color: AppColors.grey),
-            tooltip: LocaleKeys.appointments_clearTokens.tr(),
-          ),
-          IconButton(
-            onPressed: () async {
-              final dio = await DioFactory.getDio();
-              try {
-                await dio.get('https://dummyjson.com/auth/me');
-                if (context.mounted) {
-                  context.read<SnackbarBloc>().add(
-                    AddSnackbarEvent(
-                      message: LocaleKeys.appointments_testSucceeded.tr(),
-                      type: SnackbarType.success,
-                    ),
-                  );
-                }
-              } on DioException catch (e) {
-                if (context.mounted) {
-                  context.read<SnackbarBloc>().add(
-                    AddSnackbarEvent(
-                      message: LocaleKeys.appointments_testFailed.tr(
-                        args: [e.message ?? ''],
-                      ),
-                      type: SnackbarType.error,
-                    ),
-                  );
-                }
-              }
-            },
-            icon: const Icon(Icons.refresh, color: AppColors.grey),
-            tooltip: LocaleKeys.appointments_testRefresh.tr(),
-          ),
-          IconButton(
-            onPressed: () async {
-              await SharedPrefHelper.deleteSecured(SharedPrefKeys.userToken);
-              if (context.mounted) {
-                context.pushReplacementNamed(Routes.login);
-              }
-            },
-            icon: const Icon(Icons.logout, color: AppColors.grey),
-            tooltip: LocaleKeys.appointments_logout.tr(),
-          ),
-        ],
+        actions: _buildActions(context),
       ),
       body: SafeArea(
         bottom: false,
@@ -157,7 +86,7 @@ class _AppointmentsCalendarViewState extends State<AppointmentsCalendarView> {
                     });
                   },
                 ),
-                _AppointmentsList(list: list, localeTag: localeTag),
+                _AppointmentsList(list: list),
               ],
             ),
             _NewAppointmentButton(),
@@ -184,42 +113,36 @@ class _NewAppointmentButton extends StatelessWidget {
 }
 
 class _AppointmentsList extends StatelessWidget {
-  const _AppointmentsList({required this.list, required this.localeTag});
+  const _AppointmentsList({required this.list});
 
   final List list;
-  final String localeTag;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: list.isEmpty
-          ? const _EmptyState()
-          : ColoredBox(
-              color: AppColors.white,
-              child: ListView.builder(
-                padding: const EdgeInsets.only(top: 24, bottom: 50),
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  final appointment = list[index] as AppointmentEntity;
-                  return _AppointmentTile(
-                    appointment: appointment,
-                    localeTag: localeTag,
-                  );
-                },
-              ),
-            ),
+      child: ColoredBox(
+        color: AppColors.white,
+        child: ListView.builder(
+          padding: const EdgeInsets.only(top: 24, bottom: 50),
+          itemCount: list.length,
+          itemBuilder: (context, index) {
+            final appointment = list[index] as AppointmentEntity;
+            return _AppointmentTile(appointment: appointment);
+          },
+        ),
+      ),
     );
   }
 }
 
 class _AppointmentTile extends StatelessWidget {
-  const _AppointmentTile({required this.appointment, required this.localeTag});
+  const _AppointmentTile({required this.appointment});
 
   final AppointmentEntity appointment;
-  final String localeTag;
 
   @override
   Widget build(BuildContext context) {
+    final localeTag = context.locale.toLanguageTag();
     final date = AppFormatter.formatDate(appointment.date, locale: localeTag);
 
     final time = AppFormatter.formatTimeFromEnglish(
@@ -306,16 +229,74 @@ class _AppointmentTile extends StatelessWidget {
   }
 }
 
-class _EmptyState extends StatelessWidget {
-  const _EmptyState();
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        LocaleKeys.appointments_emptyState.tr(),
-        style: TextStyles.secondaryText40012,
-      ),
-    );
-  }
+List<Widget> _buildActions(BuildContext context) {
+  return [
+    IconButton(
+      onPressed: () {
+        final currentLocale = context.locale;
+        if (currentLocale.languageCode == 'en') {
+          context.setLocale(const Locale('ar'));
+        } else {
+          context.setLocale(const Locale('en'));
+        }
+      },
+      icon: const Icon(Icons.language, color: AppColors.grey),
+    ),
+    // HACK: these buttons are for user session testing
+    IconButton(
+      onPressed: () async {
+        await SharedPrefHelper.deleteSecured(SharedPrefKeys.userToken);
+        await SharedPrefHelper.deleteSecured(SharedPrefKeys.refreshToken);
+        if (context.mounted) {
+          context.read<SnackbarBloc>().add(
+            AddSnackbarEvent(
+              message: 'Cleared access + refresh. Now tap "Test Refresh".',
+              type: SnackbarType.success,
+            ),
+          );
+        }
+      },
+      icon: const Icon(Icons.delete_forever, color: AppColors.grey),
+      tooltip: LocaleKeys.appointments_clearTokens.tr(),
+    ),
+    IconButton(
+      onPressed: () async {
+        final dio = await DioFactory.getDio();
+        try {
+          await dio.get('https://dummyjson.com/auth/me');
+          if (context.mounted) {
+            context.read<SnackbarBloc>().add(
+              AddSnackbarEvent(
+                message: LocaleKeys.appointments_testSucceeded.tr(),
+                type: SnackbarType.success,
+              ),
+            );
+          }
+        } on DioException catch (e) {
+          if (context.mounted) {
+            context.read<SnackbarBloc>().add(
+              AddSnackbarEvent(
+                message: LocaleKeys.appointments_testFailed.tr(
+                  args: [e.message ?? ''],
+                ),
+                type: SnackbarType.error,
+              ),
+            );
+          }
+        }
+      },
+      icon: const Icon(Icons.refresh, color: AppColors.grey),
+      tooltip: LocaleKeys.appointments_testRefresh.tr(),
+    ),
+    IconButton(
+      onPressed: () async {
+        await SharedPrefHelper.deleteSecured(SharedPrefKeys.userToken);
+        if (context.mounted) {
+          context.pushReplacementNamed(Routes.login);
+        }
+      },
+      icon: const Icon(Icons.logout, color: AppColors.grey),
+      tooltip: LocaleKeys.appointments_logout.tr(),
+    ),
+  ];
 }
