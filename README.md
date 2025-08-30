@@ -106,4 +106,6 @@ Cache locally (e.g., by doctorId + YYYY-MM or YYYY-MM-DD) to avoid re-fetching.
 Respect business constraints: if near-real-time accuracy is required, cache TTL stays short or is bypassed; otherwise, caching improves perceived performance.
 
 their ui can be improved using staggered gridview
+
+also the appointment calendar view can be done with custonm scroll view and make the whole view scrollable
 ```
